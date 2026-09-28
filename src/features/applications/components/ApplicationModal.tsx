@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trash2, Clock, AlertTriangle } from 'lucide-react';
+import { Trash2, Clock, AlertTriangle, RotateCcw } from 'lucide-react';
 import { Modal } from '../../../components/ui/Modal';
 import { Input } from '../../../components/ui/Input';
 import { Button } from '../../../components/ui/Button';
@@ -19,6 +19,12 @@ interface Props {
   onSaved: () => void;
   onDeleted: () => void;
 }
+
+const SELECT_CLASSES =
+  'w-full h-9 px-3 rounded bg-surface border border-border-active text-body-md text-ink focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors';
+
+const LABEL_CLASSES =
+  'block text-label-md font-mono-label text-ink-secondary uppercase tracking-wider mb-1';
 
 export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSaved, onDeleted }) => {
   const [formData, setFormData] = useState<any>({});
@@ -92,7 +98,13 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
   };
 
   const handleDelete = async () => {
-    if (!app || !window.confirm('Yakin ingin menghapus lamaran ini? Seluruh riwayat log akan ikut terhapus.')) return;
+    if (
+      !app ||
+      !window.confirm(
+        'Yakin ingin menghapus lamaran ini? Seluruh riwayat log akan ikut terhapus.',
+      )
+    )
+      return;
     try {
       await deleteApplicationApi(app.id);
       onDeleted();
@@ -115,9 +127,12 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
 
   const field = (key: string) => ({
     value: formData[key] || '',
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-      setFormData({ ...formData, [key]: e.target.value }),
+    onChange: (
+      e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    ) => setFormData({ ...formData, [key]: e.target.value }),
   });
+
+  const isArchived = app && ['rejected', 'ghosted', 'withdrawn'].includes(app.status);
 
   return (
     <Modal
@@ -126,7 +141,7 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
       title={app ? 'Detail & Edit Lamaran' : 'Tambah Lamaran Baru'}
     >
       {error && (
-        <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-start gap-2">
+        <div className="mx-6 mt-4 p-3 bg-status-overdue-bg border border-status-overdue-border rounded text-body-sm text-status-overdue flex items-start gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>{error}</div>
         </div>
@@ -134,30 +149,20 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
 
       <form onSubmit={handleSave} className="p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            id="app-company"
-            label="Nama Perusahaan *"
-            required
-            {...field('company_name')}
-          />
-          <Input
-            id="app-position"
-            label="Posisi / Pekerjaan *"
-            required
-            {...field('position_title')}
-          />
+          <Input id="app-company" label="Nama Perusahaan *" required {...field('company_name')} />
+          <Input id="app-position" label="Posisi / Pekerjaan *" required {...field('position_title')} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="app-status" className="block text-xs font-semibold text-slate-700 mb-1">
+            <label htmlFor="app-status" className={LABEL_CLASSES}>
               Status
             </label>
             <select
               id="app-status"
               value={formData.status || 'bookmarked'}
               onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
+              className={SELECT_CLASSES}
             >
               <option value="bookmarked">Bookmarked</option>
               <option value="applied">Applied</option>
@@ -171,21 +176,28 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             </select>
           </div>
           <div>
-            <label htmlFor="app-jobtype" className="block text-xs font-semibold text-slate-700 mb-1">
+            <label htmlFor="app-jobtype" className={LABEL_CLASSES}>
               Tipe Kerja
             </label>
             <select
               id="app-jobtype"
               value={formData.job_type || ''}
-              onChange={(e) => setFormData({ ...formData, job_type: e.target.value || null })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white"
+              onChange={(e) =>
+                setFormData({ ...formData, job_type: e.target.value || null })
+              }
+              className={SELECT_CLASSES}
             >
               <option value="remote">Remote</option>
               <option value="hybrid">Hybrid</option>
               <option value="onsite">Onsite</option>
             </select>
           </div>
-          <Input id="app-source" label="Sumber" placeholder="LinkedIn, Jobstreet..." {...field('source')} />
+          <Input
+            id="app-source"
+            label="Sumber"
+            placeholder="LinkedIn, Jobstreet..."
+            {...field('source')}
+          />
         </div>
 
         <Input
@@ -203,17 +215,31 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Input id="app-applied" label="Tanggal Apply" type="date" {...field('applied_date')} />
-          <Input id="app-followup" label="Target Follow-Up" type="date" {...field('follow_up_date')} />
-          <Input id="app-deadline" label="Deadline Lowongan" type="date" {...field('deadline_date')} />
+          <Input
+            id="app-followup"
+            label="Target Follow-Up"
+            type="date"
+            {...field('follow_up_date')}
+          />
+          <Input
+            id="app-deadline"
+            label="Deadline Lowongan"
+            type="date"
+            {...field('deadline_date')}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input id="app-recruiter" label="Nama Recruiter" {...field('recruiter_name')} />
-          <Input id="app-recruiter-contact" label="Kontak Recruiter" {...field('recruiter_contact')} />
+          <Input
+            id="app-recruiter-contact"
+            label="Kontak Recruiter"
+            {...field('recruiter_contact')}
+          />
         </div>
 
         <div>
-          <label htmlFor="app-notes" className="block text-xs font-semibold text-slate-700 mb-1">
+          <label htmlFor="app-notes" className={LABEL_CLASSES}>
             Catatan Tambahan
           </label>
           <textarea
@@ -222,22 +248,36 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             value={formData.notes || ''}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
             placeholder="Detail benefit, nama pewawancara, dll..."
-            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+            className="w-full px-3 py-2 border border-border-active rounded text-body-md text-ink placeholder:text-ink-muted bg-surface focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
           />
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-          {app ? (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition"
-            >
-              <Trash2 className="w-4 h-4" /> Hapus Lamaran
-            </button>
-          ) : (
-            <div />
-          )}
+        {/* Footer actions */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-hairline">
+          <div className="flex items-center gap-2">
+            {app ? (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="px-3 py-2 text-action-danger hover:bg-action-danger-bg rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+                Hapus Lamaran
+              </button>
+            ) : (
+              <div />
+            )}
+            {isArchived && (
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, status: 'bookmarked' })}
+                className="px-3 py-2 text-action-focus hover:bg-action-focus-bg rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Pulihkan ke Tersimpan
+              </button>
+            )}
+          </div>
 
           <div className="flex gap-2">
             <Button type="button" variant="secondary" onClick={onClose}>
@@ -250,10 +290,12 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
         </div>
       </form>
 
+      {/* Activity log section */}
       {app && (
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100">
-          <h3 className="text-xs font-bold text-slate-600 uppercase flex items-center gap-1.5 mb-3">
-            <Clock className="w-4 h-4" /> Riwayat Status &amp; Catatan
+        <div className="px-6 py-4 bg-canvas border-t border-hairline">
+          <h3 className="text-label-sm font-mono-label text-ink-muted uppercase tracking-wider flex items-center gap-1.5 mb-3">
+            <Clock className="w-4 h-4" />
+            Riwayat Status & Catatan
           </h3>
 
           <div className="flex gap-2 mb-3">
@@ -263,7 +305,7 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
               value={newLogNote}
               onChange={(e) => setNewLogNote(e.target.value)}
               placeholder="Tambah catatan riwayat..."
-              className="flex-1 px-3 py-1.5 text-xs border border-slate-200 rounded-lg bg-white"
+              className="flex-1 h-8 px-3 text-body-sm border border-hairline rounded bg-surface text-ink placeholder:text-ink-muted focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
               onKeyDown={(e) => e.key === 'Enter' && handleAddLog()}
             />
             <Button id="log-submit" type="button" size="sm" onClick={handleAddLog}>
@@ -275,17 +317,21 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             {logs.map((log) => (
               <div
                 key={log.id}
-                className="text-xs bg-white p-2 rounded border border-slate-200 flex justify-between"
+                className="text-body-sm bg-surface p-2 rounded border border-hairline flex justify-between items-start gap-2"
               >
                 <div>
                   {log.old_status && log.new_status ? (
-                    <span className="font-semibold text-slate-800">
-                      {log.old_status} &rarr; {log.new_status}
+                    <span className="font-semibold text-ink">
+                      {log.old_status} → {log.new_status}
                     </span>
                   ) : null}
-                  {log.note && <span className="text-slate-600 ml-2">{log.note}</span>}
+                  {log.note && (
+                    <span className="text-ink-secondary ml-2">{log.note}</span>
+                  )}
                 </div>
-                <span className="text-[10px] text-slate-400">{log.created_at?.split('T')[0]}</span>
+                <span className="text-label-sm font-mono-label text-ink-muted flex-shrink-0">
+                  {log.created_at?.split('T')[0]}
+                </span>
               </div>
             ))}
           </div>
