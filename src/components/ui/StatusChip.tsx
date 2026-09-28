@@ -9,17 +9,17 @@ interface StatusChipProps {
 }
 
 const styles: Record<Urgency, string> = {
-  overdue:  'bg-status-overdue-bg border-status-overdue-border text-status-overdue',
-  upcoming: 'bg-status-upcoming-bg border-status-upcoming-border text-status-upcoming',
-  offer:    'bg-status-offer-bg border-status-offer-border text-status-offer',
-  neutral:  'bg-status-neutral-bg border-status-neutral-border text-status-neutral',
+  overdue:  'bg-status-overdue-bg border-status-overdue-border text-status-overdue dark:bg-rose-950/50 dark:border-rose-800/60 dark:text-rose-300',
+  upcoming: 'bg-status-upcoming-bg border-status-upcoming-border text-status-upcoming dark:bg-amber-950/50 dark:border-amber-800/60 dark:text-amber-300',
+  offer:    'bg-status-offer-bg border-status-offer-border text-status-offer dark:bg-emerald-950/50 dark:border-emerald-800/60 dark:text-emerald-300',
+  neutral:  'bg-status-neutral-bg border-status-neutral-border text-status-neutral dark:bg-slate-800/80 dark:border-slate-700 dark:text-slate-300',
 };
 
 const dotColors: Record<Urgency, string> = {
-  overdue:  'bg-status-overdue',
-  upcoming: 'bg-status-upcoming',
-  offer:    'bg-status-offer',
-  neutral:  'bg-status-neutral',
+  overdue:  'bg-status-overdue dark:bg-rose-400',
+  upcoming: 'bg-status-upcoming dark:bg-amber-400',
+  offer:    'bg-status-offer dark:bg-emerald-400',
+  neutral:  'bg-status-neutral dark:bg-slate-400',
 };
 
 export const StatusChip: React.FC<StatusChipProps> = ({ urgency, label, dot = false }) => (

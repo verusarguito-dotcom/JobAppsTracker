@@ -25,8 +25,8 @@ export const KanbanColumn: React.FC<Props> = ({
     <div className="flex flex-col min-w-[260px] w-[260px] flex-shrink-0">
       {/* Column header */}
       <div className="flex items-center justify-between px-md py-sm mb-sm">
-        <span className="text-headline-sm font-geist text-ink font-semibold">{label}</span>
-        <span className="text-label-sm font-mono-label text-ink-muted">
+        <span className="text-headline-sm font-geist text-ink dark:text-slate-100 font-semibold">{label}</span>
+        <span className="text-label-sm font-mono-label text-ink-muted dark:text-slate-400">
           [ {String(apps.length).padStart(2, '0')} ]
         </span>
       </div>
@@ -37,8 +37,8 @@ export const KanbanColumn: React.FC<Props> = ({
         className={`flex flex-col gap-sm p-sm rounded-lg min-h-[120px] transition-colors
           ${
             isOver
-              ? 'bg-action-focus-bg border border-dashed border-action-focus'
-              : 'bg-canvas border border-dashed border-hairline'
+              ? 'bg-action-focus-bg border border-dashed border-action-focus dark:bg-blue-950/40 dark:border-blue-500'
+              : 'bg-canvas border border-dashed border-hairline dark:bg-slate-900/40 dark:border-slate-800'
           }`}
       >
         <SortableContext
@@ -55,7 +55,7 @@ export const KanbanColumn: React.FC<Props> = ({
           ))}
         </SortableContext>
         {apps.length === 0 && (
-          <p className="text-label-sm font-mono-label text-ink-muted text-center py-4 uppercase tracking-wider">
+          <p className="text-label-sm font-mono-label text-ink-muted dark:text-slate-500 text-center py-4 uppercase tracking-wider">
             Kosong
           </p>
         )}

@@ -328,38 +328,38 @@ export const TableView: React.FC<Props> = ({
   return (
     <div className="flex flex-col w-full gap-space-lg mb-space-xl">
       {/* Level 1: View Controls & Global Push Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-hairline/60">
+      <div className="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest dark:bg-[#0F172A] p-space-md rounded-xl shadow-sm border border-hairline/60 dark:border-slate-800">
         <div className="flex items-center gap-space-md">
           {/* Segmented View Switcher */}
-          <div className="flex items-center p-1 bg-surface-container-low rounded-lg">
+          <div className="flex items-center p-1 bg-surface-container-low dark:bg-slate-800/80 rounded-lg">
             <button
               type="button"
               onClick={() => onViewChange?.('kanban')}
-              className="flex items-center gap-2 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface font-headline-sm text-headline-sm transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 font-headline-sm text-headline-sm transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">view_kanban</span>
               <span>Kanban</span>
             </button>
             <button
               type="button"
-              className="flex items-center gap-2 px-3 py-1.5 rounded bg-primary text-on-primary font-headline-sm text-headline-sm shadow-sm transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 rounded bg-primary dark:bg-slate-100 text-on-primary dark:text-slate-900 font-headline-sm text-headline-sm shadow-sm transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">table_chart</span>
               <span>Data Table</span>
-              <span className="px-1.5 py-0.2 bg-on-primary/20 rounded font-label-sm text-label-sm">
+              <span className="px-1.5 py-0.2 bg-on-primary/20 dark:bg-slate-900/20 rounded font-label-sm text-label-sm">
                 {applications.length}
               </span>
             </button>
             <button
               type="button"
               onClick={() => onViewChange?.('analytics')}
-              className="flex items-center gap-2 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface font-headline-sm text-headline-sm transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 font-headline-sm text-headline-sm transition-all"
             >
               <span className="material-symbols-outlined text-[18px]">insights</span>
               <span>Analytics</span>
             </button>
           </div>
-          <div className="hidden xl:flex items-center gap-2 pl-space-sm text-on-surface-variant font-label-sm text-label-sm">
+          <div className="hidden xl:flex items-center gap-2 pl-space-sm text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
             <span>Targeting Lead / Principal UI &amp; Design Eng</span>
           </div>
@@ -372,10 +372,10 @@ export const TableView: React.FC<Props> = ({
             type="button"
             onClick={handleSync}
             disabled={isSyncing}
-            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 disabled:opacity-50"
+            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200 font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 dark:border-slate-700 disabled:opacity-50"
             title="Sync pipeline data with database"
           >
-            <span className={`material-symbols-outlined text-[18px] text-on-surface-variant ${isSyncing ? 'animate-spin' : ''}`}>
+            <span className={`material-symbols-outlined text-[18px] text-on-surface-variant dark:text-slate-400 ${isSyncing ? 'animate-spin' : ''}`}>
               cloud_sync
             </span>
             <span className="font-medium">{isSyncing ? 'Syncing...' : 'Sync to Grist'}</span>
@@ -384,14 +384,14 @@ export const TableView: React.FC<Props> = ({
           {/* Export CSV Button */}
           <ExportCsvButton
             onNotify={onNotify}
-            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 font-medium"
+            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200 font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 dark:border-slate-700 font-medium"
           />
 
           {/* Import CSV Button */}
           <ImportCsvButton
             onImportSuccess={onReload || (() => {})}
             onNotify={onNotify}
-            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low hover:bg-surface-container text-on-surface font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 font-medium"
+            className="flex items-center gap-1.5 h-9 px-3 bg-surface-container-low dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200 font-body-sm text-body-sm rounded-lg transition-colors border border-outline-variant/20 dark:border-slate-700 font-medium"
           />
 
           {/* Bulk Edit Button */}
@@ -401,10 +401,10 @@ export const TableView: React.FC<Props> = ({
             className={`flex items-center gap-1.5 h-9 px-3 rounded-lg font-body-sm text-body-sm transition-colors border ${
               selectedIds.size > 0
                 ? 'bg-secondary-fixed text-on-secondary-fixed border-secondary font-medium'
-                : 'bg-surface-container-low hover:bg-surface-container text-on-surface border-outline-variant/20 font-medium'
+                : 'bg-surface-container-low dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200 border-outline-variant/20 dark:border-slate-700 font-medium'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px] text-on-surface-variant">checklist</span>
+            <span className="material-symbols-outlined text-[18px] text-on-surface-variant dark:text-slate-400">checklist</span>
             <span>{selectedIds.size > 0 ? `Selected (${selectedIds.size})` : 'Bulk Edit'}</span>
           </button>
 
@@ -413,7 +413,7 @@ export const TableView: React.FC<Props> = ({
             type="button"
             id="add-record-btn"
             onClick={onNewApplication}
-            className="flex items-center gap-1.5 h-9 px-3.5 bg-primary hover:bg-slate-800 text-on-primary font-headline-sm text-headline-sm rounded-lg shadow-sm transition-colors"
+            className="flex items-center gap-1.5 h-9 px-3.5 bg-primary dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-on-primary dark:text-slate-900 font-headline-sm text-headline-sm rounded-lg shadow-sm transition-colors"
           >
             <span className="material-symbols-outlined text-[18px]">add</span>
             <span>Add Record</span>
@@ -424,133 +424,134 @@ export const TableView: React.FC<Props> = ({
       {/* 5 KPI Metric Horizon */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
         {/* Metric 1: Active Pipeline */}
-        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60">
+        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60 dark:border-slate-700">
           <div className="flex items-start justify-between">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-medium">
+            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant dark:text-slate-400 font-medium">
               Active Pipeline
             </span>
-            <span className="material-symbols-outlined text-secondary text-[20px]">lan</span>
+            <span className="material-symbols-outlined text-secondary dark:text-indigo-400 text-[20px]">lan</span>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="font-display text-display text-on-surface tracking-tight font-semibold">
+            <span className="font-display text-display text-on-surface dark:text-slate-100 tracking-tight font-semibold">
               {activeApps.length}
             </span>
-            <span className="font-label-sm text-label-sm text-on-tertiary-container font-semibold">
+            <span className="font-label-sm text-label-sm text-on-tertiary-container dark:text-emerald-400 font-semibold">
               +{Math.max(1, Math.min(activeApps.length, 3))} this week
             </span>
           </div>
-          <div className="w-full bg-surface-container-high h-1 rounded-full mt-3 overflow-hidden">
-            <div className="bg-secondary h-full rounded-full transition-all duration-500" style={{ width: `${activeRatio}%` }} />
+          <div className="w-full bg-surface-container-high dark:bg-slate-700 h-1 rounded-full mt-3 overflow-hidden">
+            <div className="bg-secondary dark:bg-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${activeRatio}%` }} />
           </div>
         </div>
 
         {/* Metric 2: Overdue SLA */}
-        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60">
+        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60 dark:border-slate-700">
           <div className="flex items-start justify-between">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-error font-medium">
+            <span className="font-label-sm text-label-sm uppercase tracking-wider text-error dark:text-rose-400 font-medium">
               Overdue SLA
             </span>
-            <span className="material-symbols-outlined text-error text-[20px]">warning</span>
+            <span className="material-symbols-outlined text-error dark:text-rose-400 text-[20px]">warning</span>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="font-display text-display text-error tracking-tight font-semibold">
+            <span className="font-display text-display text-error dark:text-rose-400 tracking-tight font-semibold">
               {overdueCountStr}
             </span>
-            <span className="font-body-sm text-body-sm text-on-surface-variant">
+            <span className="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400">
               {overdueApps.length > 0 ? 'Action Required' : 'All Caught Up'}
             </span>
           </div>
-          <div className="w-full bg-error-container h-1 rounded-full mt-3 overflow-hidden">
-            <div className="bg-error h-full rounded-full transition-all duration-500" style={{ width: `${overdueRatio}%` }} />
+          <div className="w-full bg-error-container dark:bg-rose-950/60 h-1 rounded-full mt-3 overflow-hidden">
+            <div className="bg-error dark:bg-rose-500 h-full rounded-full transition-all duration-500" style={{ width: `${overdueRatio}%` }} />
           </div>
         </div>
 
         {/* Metric 3: Median Target */}
-        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60">
+        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60 dark:border-slate-700">
           <div className="flex items-start justify-between">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-medium">
+            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant dark:text-slate-400 font-medium">
               Median Target
             </span>
-            <span className="material-symbols-outlined text-on-surface-variant text-[20px]">payments</span>
+            <span className="material-symbols-outlined text-on-surface-variant dark:text-slate-400 text-[20px]">payments</span>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="font-display text-display text-on-surface tracking-tight font-semibold">
+            <span className="font-display text-display text-on-surface dark:text-slate-100 tracking-tight font-semibold">
               {salaryStats.median}
             </span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">Base + Eq</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant dark:text-slate-400">Base + Eq</span>
           </div>
           <div className="flex items-center gap-1 mt-3">
-            <span className="w-2 h-2 rounded-full bg-on-tertiary-container flex-shrink-0"></span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant truncate">
+            <span className="w-2 h-2 rounded-full bg-on-tertiary-container dark:bg-emerald-400 flex-shrink-0"></span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant dark:text-slate-400 truncate">
               {salaryStats.band}
             </span>
           </div>
         </div>
 
         {/* Metric 4: Offers / Final Stages */}
-        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60">
+        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60 dark:border-slate-700">
           <div className="flex items-start justify-between">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-medium">
+            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant dark:text-slate-400 font-medium">
               Offers / Finals
             </span>
-            <span className="material-symbols-outlined text-on-tertiary-container text-[20px]">verified</span>
+            <span className="material-symbols-outlined text-on-tertiary-container dark:text-emerald-400 text-[20px]">verified</span>
           </div>
           <div className="flex items-baseline gap-2 mt-2">
-            <span className="font-display text-display text-on-surface tracking-tight font-semibold">
+            <span className="font-display text-display text-on-surface dark:text-slate-100 tracking-tight font-semibold">
               {offersAndFinalsCount || (offerApps.length + finalsApps.length)}
             </span>
-            <span className="font-label-sm text-label-sm text-on-tertiary-container font-semibold">
+            <span className="font-label-sm text-label-sm text-on-tertiary-container dark:text-emerald-400 font-semibold">
               {offerApps.length} Active Offer{offerApps.length !== 1 ? 's' : ''}
             </span>
           </div>
-          <div className="flex items-center gap-1.5 mt-3 text-on-surface-variant font-label-sm text-label-sm truncate">
+          <div className="flex items-center gap-1.5 mt-3 text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm truncate">
             <span>{offersSubtext}</span>
           </div>
         </div>
 
         {/* Metric 5: Grist Engine Pulse */}
-        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60">
+        <div className="flex flex-col justify-between p-space-md bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-hairline/60 dark:border-slate-700">
           <div className="flex items-start justify-between">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-medium">
+            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant dark:text-slate-400 font-medium">
               Grist Engine
             </span>
-            <span className="w-2.5 h-2.5 rounded-full bg-on-tertiary-container animate-pulse"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-on-tertiary-container dark:bg-emerald-400 animate-pulse"></span>
           </div>
           <div className="flex flex-col mt-2">
-            <span className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+            <span className="font-headline-md text-headline-md text-on-surface dark:text-slate-100 font-semibold tracking-tight">
               Cloud v2.1
             </span>
-            <span className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            <span className="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 mt-0.5">
               Synced 2m ago
             </span>
           </div>
-          <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm mt-3 pt-1">
+          <div className="flex items-center justify-between text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm mt-3 pt-1">
             <span>Row checksum: #{checksum}</span>
-            <span className="material-symbols-outlined text-[16px] text-on-tertiary-container">done_all</span>
+            <span className="material-symbols-outlined text-[16px] text-on-tertiary-container dark:text-emerald-400">done_all</span>
           </div>
         </div>
       </div>
 
       {/* Toolbar Filter Cepat (Urgency, Stage, Location) */}
+      {/* Toolbar Filter Cepat (Urgency, Stage, Location) */}
       <div
         ref={dropdownRef}
-        className="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest px-space-md py-space-sm rounded-xl shadow-sm border border-hairline/60 relative z-20"
+        className="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-lowest dark:bg-[#0F172A] px-space-md py-space-sm rounded-xl shadow-sm border border-hairline/60 dark:border-slate-800 relative z-20"
       >
         <div className="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
           {/* Search with hotkey prompt */}
           <div className="relative flex items-center min-w-[240px] max-w-sm w-full">
-            <span className="material-symbols-outlined absolute left-3 text-[18px] text-on-surface-variant">
+            <span className="material-symbols-outlined absolute left-3 text-[18px] text-on-surface-variant dark:text-slate-400">
               filter_alt
             </span>
             <input
               ref={searchInputRef}
-              className="w-full h-8 pl-9 pr-12 bg-surface-container-low text-on-surface placeholder:text-on-surface-variant rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary border border-transparent focus:border-outline-variant transition-colors"
+              className="w-full h-8 pl-9 pr-12 bg-surface-container-low dark:bg-slate-800/80 text-on-surface dark:text-slate-100 placeholder:text-on-surface-variant dark:placeholder:text-slate-500 rounded-lg font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-primary dark:focus:ring-slate-400 border border-transparent focus:border-outline-variant dark:focus:border-slate-600 transition-colors"
               placeholder="Filter pipeline or role..."
               type="text"
               value={filterSearch}
               onChange={(e) => setFilterSearch(e.target.value)}
             />
-            <kbd className="absolute right-2.5 px-1.5 py-0.5 bg-surface-container-high text-on-surface-variant rounded font-label-sm text-label-sm uppercase pointer-events-none">
+            <kbd className="absolute right-2.5 px-1.5 py-0.5 bg-surface-container-high dark:bg-slate-700 text-on-surface-variant dark:text-slate-300 rounded font-label-sm text-label-sm uppercase pointer-events-none">
               /
             </kbd>
           </div>
@@ -562,11 +563,11 @@ export const TableView: React.FC<Props> = ({
               onClick={() => setOpenDropdown(openDropdown === 'urgency' ? null : 'urgency')}
               className={`flex items-center gap-1.5 h-8 px-2.5 rounded-lg font-body-sm text-body-sm transition-colors ${
                 urgencyFilter !== 'all'
-                  ? 'bg-secondary-fixed text-on-secondary-fixed font-medium'
-                  : 'bg-surface-container-low hover:bg-surface-container text-on-surface'
+                  ? 'bg-secondary-fixed text-on-secondary-fixed dark:bg-indigo-900/60 dark:text-indigo-200 font-medium'
+                  : 'bg-surface-container-low dark:bg-slate-800/80 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200'
               }`}
             >
-              <span className="text-on-surface-variant font-label-sm text-label-sm">Urgency:</span>
+              <span className="text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm">Urgency:</span>
               <span className="font-medium">
                 {urgencyFilter === 'all'
                   ? `All (${overdueApps.length} High)`
@@ -576,16 +577,16 @@ export const TableView: React.FC<Props> = ({
                   ? 'Upcoming'
                   : 'Normal'}
               </span>
-              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+              <span className="material-symbols-outlined text-[16px] text-on-surface-variant dark:text-slate-400">expand_more</span>
             </button>
 
             {openDropdown === 'urgency' && (
-              <div className="absolute left-0 top-10 w-48 bg-surface-container-lowest rounded-lg shadow-overlay border border-hairline/80 py-1 z-30">
+              <div className="absolute left-0 top-10 w-48 bg-surface-container-lowest dark:bg-[#1E293B] rounded-lg shadow-overlay border border-hairline/80 dark:border-slate-700 py-1 z-30">
                 <button
                   type="button"
                   onClick={() => { setUrgencyFilter('all'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    urgencyFilter === 'all' ? 'font-semibold text-primary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    urgencyFilter === 'all' ? 'font-semibold text-primary dark:text-slate-100' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   All ({overdueApps.length} High)
@@ -593,20 +594,20 @@ export const TableView: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={() => { setUrgencyFilter('overdue'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors flex items-center justify-between ${
-                    urgencyFilter === 'overdue' ? 'font-semibold text-error' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors flex items-center justify-between ${
+                    urgencyFilter === 'overdue' ? 'font-semibold text-error dark:text-rose-400' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   <span>Overdue SLA</span>
-                  <span className="px-1.5 py-0.2 rounded bg-error-container text-error font-label-sm text-label-sm">
+                  <span className="px-1.5 py-0.2 rounded bg-error-container dark:bg-rose-950/60 text-error dark:text-rose-300 font-label-sm text-label-sm">
                     {overdueApps.length}
                   </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setUrgencyFilter('upcoming'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    urgencyFilter === 'upcoming' ? 'font-semibold text-secondary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    urgencyFilter === 'upcoming' ? 'font-semibold text-secondary dark:text-indigo-400' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   Upcoming (≤ 2d)
@@ -614,8 +615,8 @@ export const TableView: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={() => { setUrgencyFilter('normal'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    urgencyFilter === 'normal' ? 'font-semibold text-primary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    urgencyFilter === 'normal' ? 'font-semibold text-primary dark:text-slate-100' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   Normal Pipeline
@@ -631,24 +632,24 @@ export const TableView: React.FC<Props> = ({
               onClick={() => setOpenDropdown(openDropdown === 'stage' ? null : 'stage')}
               className={`flex items-center gap-1.5 h-8 px-2.5 rounded-lg font-body-sm text-body-sm transition-colors ${
                 stageFilter !== 'all'
-                  ? 'bg-secondary-fixed text-on-secondary-fixed font-medium'
-                  : 'bg-surface-container-low hover:bg-surface-container text-on-surface'
+                  ? 'bg-secondary-fixed text-on-secondary-fixed dark:bg-indigo-900/60 dark:text-indigo-200 font-medium'
+                  : 'bg-surface-container-low dark:bg-slate-800/80 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200'
               }`}
             >
-              <span className="text-on-surface-variant font-label-sm text-label-sm">Stage:</span>
+              <span className="text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm">Stage:</span>
               <span className="font-medium capitalize">
                 {stageFilter === 'all' ? `All Stages (${activeApps.length})` : stageFilter}
               </span>
-              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+              <span className="material-symbols-outlined text-[16px] text-on-surface-variant dark:text-slate-400">expand_more</span>
             </button>
 
             {openDropdown === 'stage' && (
-              <div className="absolute left-0 top-10 w-52 bg-surface-container-lowest rounded-lg shadow-overlay border border-hairline/80 py-1 z-30 max-h-64 overflow-y-auto">
+              <div className="absolute left-0 top-10 w-52 bg-surface-container-lowest dark:bg-[#1E293B] rounded-lg shadow-overlay border border-hairline/80 dark:border-slate-700 py-1 z-30 max-h-64 overflow-y-auto">
                 <button
                   type="button"
                   onClick={() => { setStageFilter('all'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    stageFilter === 'all' ? 'font-semibold text-primary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    stageFilter === 'all' ? 'font-semibold text-primary dark:text-slate-100' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   All Stages ({applications.length})
@@ -658,8 +659,8 @@ export const TableView: React.FC<Props> = ({
                     key={st}
                     type="button"
                     onClick={() => { setStageFilter(st); setOpenDropdown(null); }}
-                    className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors capitalize ${
-                      stageFilter === st ? 'font-semibold text-secondary' : 'text-on-surface'
+                    className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors capitalize ${
+                      stageFilter === st ? 'font-semibold text-secondary dark:text-indigo-400' : 'text-on-surface dark:text-slate-200'
                     }`}
                   >
                     {st === 'interview' ? 'Interviewing' : st === 'offer' ? 'Offer Received' : st}
@@ -676,24 +677,24 @@ export const TableView: React.FC<Props> = ({
               onClick={() => setOpenDropdown(openDropdown === 'loc' ? null : 'loc')}
               className={`flex items-center gap-1.5 h-8 px-2.5 rounded-lg font-body-sm text-body-sm transition-colors ${
                 locFilter !== 'all'
-                  ? 'bg-secondary-fixed text-on-secondary-fixed font-medium'
-                  : 'bg-surface-container-low hover:bg-surface-container text-on-surface'
+                  ? 'bg-secondary-fixed text-on-secondary-fixed dark:bg-indigo-900/60 dark:text-indigo-200 font-medium'
+                  : 'bg-surface-container-low dark:bg-slate-800/80 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200'
               }`}
             >
-              <span className="text-on-surface-variant font-label-sm text-label-sm">Loc:</span>
+              <span className="text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm">Loc:</span>
               <span className="font-medium capitalize">
                 {locFilter === 'all' ? 'Remote + Hybrid' : locFilter}
               </span>
-              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+              <span className="material-symbols-outlined text-[16px] text-on-surface-variant dark:text-slate-400">expand_more</span>
             </button>
 
             {openDropdown === 'loc' && (
-              <div className="absolute left-0 top-10 w-44 bg-surface-container-lowest rounded-lg shadow-overlay border border-hairline/80 py-1 z-30">
+              <div className="absolute left-0 top-10 w-44 bg-surface-container-lowest dark:bg-[#1E293B] rounded-lg shadow-overlay border border-hairline/80 dark:border-slate-700 py-1 z-30">
                 <button
                   type="button"
                   onClick={() => { setLocFilter('all'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    locFilter === 'all' ? 'font-semibold text-primary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    locFilter === 'all' ? 'font-semibold text-primary dark:text-slate-100' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   Remote + Hybrid (All)
@@ -701,8 +702,8 @@ export const TableView: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={() => { setLocFilter('remote'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    locFilter === 'remote' ? 'font-semibold text-secondary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    locFilter === 'remote' ? 'font-semibold text-secondary dark:text-indigo-400' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   Remote
@@ -710,8 +711,8 @@ export const TableView: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={() => { setLocFilter('hybrid'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    locFilter === 'hybrid' ? 'font-semibold text-secondary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    locFilter === 'hybrid' ? 'font-semibold text-secondary dark:text-indigo-400' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   Hybrid
@@ -719,8 +720,8 @@ export const TableView: React.FC<Props> = ({
                 <button
                   type="button"
                   onClick={() => { setLocFilter('onsite'); setOpenDropdown(null); }}
-                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container transition-colors ${
-                    locFilter === 'onsite' ? 'font-semibold text-secondary' : 'text-on-surface'
+                  className={`w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-container dark:hover:bg-slate-700 transition-colors ${
+                    locFilter === 'onsite' ? 'font-semibold text-secondary dark:text-indigo-400' : 'text-on-surface dark:text-slate-200'
                   }`}
                 >
                   On-site
@@ -732,8 +733,8 @@ export const TableView: React.FC<Props> = ({
 
         {/* Right Customizers: Density & Columns */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 h-8 px-2.5 bg-surface-container-low text-on-surface rounded-lg font-body-sm text-body-sm">
-            <span className="material-symbols-outlined text-[16px] text-on-surface-variant">view_column</span>
+          <div className="flex items-center gap-1.5 h-8 px-2.5 bg-surface-container-low dark:bg-slate-800/80 text-on-surface dark:text-slate-200 rounded-lg font-body-sm text-body-sm">
+            <span className="material-symbols-outlined text-[16px] text-on-surface-variant dark:text-slate-400">view_column</span>
             <span>Columns (8/8)</span>
           </div>
           <button
@@ -741,8 +742,8 @@ export const TableView: React.FC<Props> = ({
             onClick={() => setIsCompact(!isCompact)}
             className={`flex items-center gap-1 h-8 px-2 rounded-lg font-body-sm text-body-sm transition-colors ${
               isCompact
-                ? 'bg-secondary-fixed text-on-secondary-fixed'
-                : 'bg-surface-container-low hover:bg-surface-container text-on-surface'
+                ? 'bg-secondary-fixed text-on-secondary-fixed dark:bg-indigo-900/60 dark:text-indigo-200'
+                : 'bg-surface-container-low dark:bg-slate-800/80 hover:bg-surface-container dark:hover:bg-slate-700 text-on-surface dark:text-slate-200'
             }`}
             title={isCompact ? 'Comfortable Density' : 'Compact Density'}
             aria-label="Toggle Table Density"
@@ -755,12 +756,12 @@ export const TableView: React.FC<Props> = ({
       </div>
 
       {/* Primary High-Density Ledger Table */}
-      <div className="w-full bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col border border-hairline/60">
+      <div className="w-full bg-surface-container-lowest dark:bg-[#1E293B] rounded-xl shadow-sm overflow-hidden flex flex-col border border-hairline/60 dark:border-slate-800">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse select-none" role="grid" aria-label="High-Density Ledger Table">
             {/* Table Head */}
             <thead>
-              <tr className="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider h-11 border-b border-hairline/60">
+              <tr className="bg-surface-container-low dark:bg-slate-800/90 text-on-surface-variant dark:text-slate-300 font-label-sm text-label-sm uppercase tracking-wider h-11 border-b border-hairline/60 dark:border-slate-700/80">
                 <th className="w-12 px-space-md text-center">
                   <input
                     className="w-4 h-4 rounded-sm accent-primary cursor-pointer align-middle"
@@ -774,7 +775,7 @@ export const TableView: React.FC<Props> = ({
                 <th className="py-space-sm px-space-md font-semibold min-w-[260px]">
                   <div
                     onClick={() => toggleSort('company')}
-                    className="flex items-center gap-1.5 cursor-pointer hover:text-on-surface transition-colors"
+                    className="flex items-center gap-1.5 cursor-pointer hover:text-on-surface dark:hover:text-slate-100 transition-colors"
                   >
                     <span>Company &amp; Role</span>
                     <span className="material-symbols-outlined text-[14px]">
@@ -786,7 +787,7 @@ export const TableView: React.FC<Props> = ({
                 <th className="py-space-sm px-space-md font-semibold min-w-[160px]">
                   <div
                     onClick={() => toggleSort('sla')}
-                    className="flex items-center gap-1.5 cursor-pointer hover:text-on-surface transition-colors"
+                    className="flex items-center gap-1.5 cursor-pointer hover:text-on-surface dark:hover:text-slate-100 transition-colors"
                   >
                     <span>Action SLA / Due</span>
                     <span className="material-symbols-outlined text-[14px]">
@@ -803,18 +804,18 @@ export const TableView: React.FC<Props> = ({
             </thead>
 
             {/* Table Body */}
-            <tbody className="divide-y divide-hairline/40 text-on-surface font-body-sm text-body-sm">
+            <tbody className="divide-y divide-hairline/40 dark:divide-slate-800/60 text-on-surface dark:text-slate-200 font-body-sm text-body-sm">
               {filteredApplications.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="py-16 text-center">
                     <div className="flex flex-col items-center justify-center">
-                      <span className="material-symbols-outlined text-[36px] text-on-surface-variant mb-2">
+                      <span className="material-symbols-outlined text-[36px] text-on-surface-variant dark:text-slate-500 mb-2">
                         filter_alt_off
                       </span>
-                      <p className="font-headline-sm text-on-surface font-semibold">
+                      <p className="font-headline-sm text-on-surface dark:text-slate-200 font-semibold">
                         No applications found
                       </p>
-                      <p className="font-body-sm text-on-surface-variant mt-1">
+                      <p className="font-body-sm text-on-surface-variant dark:text-slate-400 mt-1">
                         Try modifying search or filter criteria.
                       </p>
                       {(filterSearch || urgencyFilter !== 'all' || stageFilter !== 'all' || locFilter !== 'all') && (
@@ -826,7 +827,7 @@ export const TableView: React.FC<Props> = ({
                             setStageFilter('all');
                             setLocFilter('all');
                           }}
-                          className="mt-3 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface font-medium rounded-lg text-body-sm transition-colors"
+                          className="mt-3 px-3 py-1.5 bg-surface-container dark:bg-slate-800 hover:bg-surface-container-high dark:hover:bg-slate-700 text-on-surface dark:text-slate-200 font-medium rounded-lg text-body-sm transition-colors"
                         >
                           Reset Filters
                         </button>
@@ -850,8 +851,8 @@ export const TableView: React.FC<Props> = ({
                     <tr
                       key={app.id}
                       onClick={() => onSelectApplication(app)}
-                      className={`hover:bg-surface-container-low/70 transition-colors group cursor-pointer ${
-                        isChecked ? 'bg-surface-container-low/30' : ''
+                      className={`hover:bg-surface-container-low/70 dark:hover:bg-slate-800/60 transition-colors group cursor-pointer ${
+                        isChecked ? 'bg-surface-container-low/30 dark:bg-slate-800/50' : ''
                       }`}
                       role="row"
                       tabIndex={0}
@@ -871,21 +872,21 @@ export const TableView: React.FC<Props> = ({
                       {/* Company & Role */}
                       <td className={cellPadding}>
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center font-label-md text-label-md font-bold text-on-surface overflow-hidden shadow-sm flex-shrink-0">
-                            <span className="text-secondary font-mono-label font-bold text-sm">
+                          <div className="w-9 h-9 rounded-lg bg-surface-container dark:bg-slate-800 flex items-center justify-center font-label-md text-label-md font-bold text-on-surface dark:text-slate-200 overflow-hidden shadow-sm flex-shrink-0">
+                            <span className="text-secondary dark:text-blue-400 font-mono-label font-bold text-sm">
                               {getCompanyInitials(app.company_name)}
                             </span>
                           </div>
                           <div className="flex flex-col min-w-0">
                             <div className="flex items-center gap-2">
-                              <span className="font-headline-sm text-headline-sm text-on-surface font-semibold truncate">
+                              <span className="font-headline-sm text-headline-sm text-on-surface dark:text-slate-100 font-semibold truncate">
                                 {app.company_name}
                               </span>
-                              <span className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm uppercase">
+                              <span className="px-1.5 py-0.5 rounded bg-surface-container-high dark:bg-slate-800 text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm uppercase">
                                 {app.source || (app.job_type === 'remote' ? 'Remote' : 'Direct')}
                               </span>
                             </div>
-                            <span className="text-on-surface-variant font-body-sm text-body-sm truncate">
+                            <span className="text-on-surface-variant dark:text-slate-400 font-body-sm text-body-sm truncate">
                               {app.position_title} • {app.location || (app.job_type ? app.job_type.toUpperCase() : 'Remote')} ({app.job_type ? (app.job_type.charAt(0).toUpperCase() + app.job_type.slice(1)) : 'Full-time'})
                             </span>
                           </div>
@@ -895,44 +896,44 @@ export const TableView: React.FC<Props> = ({
                       {/* Stage / Status Pill */}
                       <td className={`${cellPadding} whitespace-nowrap`}>
                         {app.status === 'interview' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-on-secondary-fixed dark:bg-blue-950/80 dark:text-blue-300 dark:border dark:border-blue-800/50 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-secondary dark:bg-blue-400"></span>
                             Interviewing
                           </span>
                         )}
                         {(app.status === 'offer' || app.status === 'accepted') && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-on-tertiary-container"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed-variant dark:bg-emerald-950/80 dark:text-emerald-300 dark:border dark:border-emerald-800/50 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-on-tertiary-container dark:bg-emerald-400"></span>
                             {app.status === 'offer' ? 'Offer Received' : 'Accepted'}
                           </span>
                         )}
                         {app.status === 'screening' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface dark:bg-slate-800 dark:text-slate-300 dark:border dark:border-slate-700/60 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-outline dark:bg-slate-400"></span>
                             Recruiter Screening
                           </span>
                         )}
                         {app.status === 'applied' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm font-semibold border border-outline-variant/30">
-                            <span className="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant dark:bg-slate-800/70 dark:text-slate-300 font-label-sm text-label-sm font-semibold border border-outline-variant/30 dark:border-slate-700">
+                            <span className="w-1.5 h-1.5 rounded-full bg-outline dark:bg-slate-400"></span>
                             Applied
                           </span>
                         )}
                         {app.status === 'bookmarked' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low text-on-surface-variant dark:bg-slate-800/70 dark:text-slate-400 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-outline-variant dark:bg-slate-500"></span>
                             Bookmarked
                           </span>
                         )}
                         {app.status === 'rejected' && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container/60 text-error font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-error"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container/60 text-error dark:bg-rose-950/70 dark:text-rose-400 dark:border dark:border-rose-900/60 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-error dark:bg-rose-400"></span>
                             Rejected
                           </span>
                         )}
                         {(app.status === 'ghosted' || app.status === 'withdrawn') && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container text-on-surface-variant dark:bg-slate-800/70 dark:text-slate-400 dark:border dark:border-slate-700/50 font-label-sm text-label-sm font-semibold">
+                            <span className="w-1.5 h-1.5 rounded-full bg-outline-variant dark:bg-slate-500"></span>
                             {app.status === 'ghosted' ? 'Ghosted' : 'Withdrawn'}
                           </span>
                         )}
@@ -941,39 +942,39 @@ export const TableView: React.FC<Props> = ({
                       {/* Action SLA / Due */}
                       <td className={`${cellPadding} whitespace-nowrap`}>
                         {isOverdue && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container text-error font-label-sm text-label-sm font-semibold">
-                            <span className="w-2 h-2 rounded-full bg-error"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-error-container text-error dark:bg-rose-950/80 dark:text-rose-300 dark:border dark:border-rose-900/60 font-label-sm text-label-sm font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-error dark:bg-rose-400"></span>
                             Overdue ({target})
                           </span>
                         )}
                         {isDueSoon && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-secondary font-label-sm text-label-sm font-semibold">
-                            <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-secondary-fixed text-secondary dark:bg-amber-950/80 dark:text-amber-300 dark:border dark:border-amber-800/50 font-label-sm text-label-sm font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-secondary dark:bg-amber-400"></span>
                             {diff === 0 ? 'Due Today' : 'Due Tomorrow'}
                           </span>
                         )}
                         {isDueInFew && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-high text-on-tertiary-container font-label-sm text-label-sm font-semibold">
-                            <span className="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-high text-on-tertiary-container dark:bg-slate-800 dark:text-slate-300 dark:border dark:border-slate-700 font-label-sm text-label-sm font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-on-tertiary-container dark:bg-slate-400"></span>
                             Due in {diff}d
                           </span>
                         )}
                         {!isOverdue && !isDueSoon && !isDueInFew && diff !== null && !isClosed && (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold">
-                            <span className="w-2 h-2 rounded-full bg-surface-tint"></span>
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-high text-on-surface dark:bg-slate-800 dark:text-slate-300 dark:border dark:border-slate-700 font-label-sm text-label-sm font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-surface-tint dark:bg-slate-400"></span>
                             Due in {diff}d
                           </span>
                         )}
                         {(diff === null || isClosed) && (
-                          <span className="text-on-surface-variant font-label-sm text-label-sm">—</span>
+                          <span className="text-on-surface-variant dark:text-slate-500 font-label-sm text-label-sm">—</span>
                         )}
                       </td>
 
                       {/* Compensation Band */}
-                      <td className={`${cellPadding} whitespace-nowrap font-label-md text-label-md font-semibold text-on-surface`}>
+                      <td className={`${cellPadding} whitespace-nowrap font-label-md text-label-md font-semibold text-on-surface dark:text-slate-200`}>
                         {sal.main}{' '}
                         {sal.sub && (
-                          <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">
+                          <span className="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400 font-normal">
                             {sal.sub}
                           </span>
                         )}
@@ -986,10 +987,10 @@ export const TableView: React.FC<Props> = ({
                             {getContactInitials(app.recruiter_name)}
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="font-medium text-on-surface truncate">
+                            <span className="font-medium text-on-surface dark:text-slate-200 truncate">
                               {app.recruiter_name || 'Direct Apply'}
                             </span>
-                            <span className="text-on-surface-variant font-label-sm text-label-sm truncate">
+                            <span className="text-on-surface-variant dark:text-slate-400 font-label-sm text-label-sm truncate">
                               {app.recruiter_contact || 'Talent Acquisition'}
                             </span>
                           </div>
@@ -999,10 +1000,10 @@ export const TableView: React.FC<Props> = ({
                       {/* Next Milestone / Notes */}
                       <td className={cellPadding}>
                         <div className="flex items-center gap-2 max-w-xs">
-                          <span className="material-symbols-outlined text-[16px] text-secondary flex-shrink-0">
+                          <span className="material-symbols-outlined text-[16px] text-secondary dark:text-blue-400 flex-shrink-0">
                             assignment
                           </span>
-                          <span className="font-medium text-on-surface truncate">
+                          <span className="font-medium text-on-surface dark:text-slate-200 truncate">
                             {app.notes || 'Pipeline application active'}
                           </span>
                         </div>
@@ -1011,10 +1012,10 @@ export const TableView: React.FC<Props> = ({
                       {/* Grist Sync */}
                       <td className={`${cellPadding} whitespace-nowrap`}>
                         <div className="flex flex-col">
-                          <span className="font-label-sm text-label-sm text-on-surface">
+                          <span className="font-label-sm text-label-sm text-on-surface dark:text-slate-300">
                             Synced {formatTimeAgo(app.updated_at)}
                           </span>
-                          <span className="text-on-surface-variant font-label-sm text-label-sm">
+                          <span className="text-on-surface-variant dark:text-slate-500 font-label-sm text-label-sm">
                             Row #{app.id.slice(-4).toUpperCase()}
                           </span>
                         </div>
@@ -1027,7 +1028,7 @@ export const TableView: React.FC<Props> = ({
                             <a
                               href={`mailto:${app.recruiter_contact}`}
                               onClick={(e) => e.stopPropagation()}
-                              className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-on-surface transition-colors"
+                              className="p-1.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 transition-colors"
                               title={`Email ${app.recruiter_name || 'Recruiter'}`}
                               aria-label={`Email ${app.recruiter_name || 'Recruiter'}`}
                             >
@@ -1037,7 +1038,7 @@ export const TableView: React.FC<Props> = ({
                             <button
                               type="button"
                               onClick={() => onSelectApplication(app)}
-                              className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-on-surface transition-colors"
+                              className="p-1.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 transition-colors"
                               title="Kontak Recruiter"
                               aria-label="Kontak Recruiter"
                             >
@@ -1050,7 +1051,7 @@ export const TableView: React.FC<Props> = ({
                               href={app.job_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-on-surface transition-colors"
+                              className="p-1.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 transition-colors"
                               title="Buka Link Lowongan"
                               aria-label={`Buka link lowongan ${app.company_name}`}
                             >
@@ -1060,7 +1061,7 @@ export const TableView: React.FC<Props> = ({
                             <button
                               type="button"
                               onClick={() => onSelectApplication(app)}
-                              className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-on-surface transition-colors"
+                              className="p-1.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 transition-colors"
                               title="Lihat Berkas Lengkap"
                               aria-label="Lihat Berkas Lengkap"
                             >
@@ -1071,7 +1072,7 @@ export const TableView: React.FC<Props> = ({
                           <button
                             type="button"
                             onClick={() => onSelectApplication(app)}
-                            className="p-1.5 hover:bg-surface-container rounded text-on-surface-variant hover:text-on-surface transition-colors"
+                            className="p-1.5 hover:bg-surface-container dark:hover:bg-slate-800 rounded text-on-surface-variant dark:text-slate-400 hover:text-on-surface dark:hover:text-slate-200 transition-colors"
                             title="Detail & Opsi"
                             aria-label={`Lihat detail ${app.company_name}`}
                           >

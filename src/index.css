@@ -13,6 +13,16 @@
     background-color: #F8FAFC;
     color: #0F172A;
     overscroll-behavior: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html.dark body {
+    background-color: #0B132B;
+    color: #F8FAFC;
   }
 
   /* Hide native scrollbars, keep scroll functional */
@@ -37,5 +47,65 @@
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  html.dark .bg-canvas {
+    background-color: #0B132B;
+  }
+  html.dark .bg-surface {
+    background-color: #1E293B;
+  }
+  html.dark .bg-surface-sub {
+    background-color: #162032;
+  }
+  html.dark .border-hairline {
+    border-color: #334155;
+  }
+  html.dark .border-border-active {
+    border-color: #475569;
+  }
+  html.dark .text-ink {
+    color: #F8FAFC;
+  }
+  html.dark .text-ink-secondary {
+    color: #94A3B8;
+  }
+  html.dark .text-ink-muted {
+    color: #64748B;
+  }
+  html.dark .bg-surface-container-lowest {
+    background-color: #0F172A;
+  }
+  html.dark .bg-surface-container-low {
+    background-color: #162032;
+  }
+  html.dark .bg-surface-container {
+    background-color: #1E293B;
+  }
+  html.dark .bg-surface-container-high {
+    background-color: #27354E;
+  }
+  html.dark .bg-surface-container-highest {
+    background-color: #334155;
+  }
+  html.dark .text-on-surface {
+    color: #F8FAFC;
+  }
+  html.dark .text-on-surface-variant {
+    color: #94A3B8;
+  }
+  html.dark .bg-background {
+    background-color: #0B132B;
+  }
+  html.dark .text-on-background {
+    color: #F8FAFC;
+  }
+  html.dark .border-outline {
+    border-color: #475569;
+  }
+  html.dark .border-outline-variant {
+    border-color: #334155;
   }
 }

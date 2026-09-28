@@ -22,7 +22,7 @@ export const BackupButton: React.FC = () => {
       id="backup-button"
       onClick={handleClick}
       disabled={loading}
-      className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition disabled:opacity-50"
+      className="p-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition disabled:opacity-50"
       title="Unduh Backup Database Atomik"
       aria-label="Buat dan unduh backup database"
     >

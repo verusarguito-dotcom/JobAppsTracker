@@ -138,8 +138,8 @@ export const ImportCsvModal: React.FC<Props> = ({
           onClick={() => fileInputRef.current?.click()}
           className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
             dragActive
-              ? 'border-action-primary bg-action-focus-bg'
-              : 'border-hairline hover:border-action-primary/50 bg-canvas/50'
+              ? 'border-action-primary bg-action-focus-bg dark:bg-blue-950/40 dark:border-blue-500'
+              : 'border-hairline dark:border-slate-700 hover:border-action-primary/50 dark:hover:border-slate-500 bg-canvas/50 dark:bg-slate-900/40'
           }`}
         >
           <input
@@ -152,14 +152,14 @@ export const ImportCsvModal: React.FC<Props> = ({
           />
 
           <div className="flex flex-col items-center justify-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-surface border border-hairline flex items-center justify-center text-ink-secondary">
+            <div className="w-10 h-10 rounded-full bg-surface dark:bg-slate-800 border border-hairline dark:border-slate-700 flex items-center justify-center text-ink-secondary dark:text-slate-300">
               <Upload className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-body-md font-medium text-ink">
+              <p className="text-body-md font-medium text-ink dark:text-slate-100">
                 Pilih file CSV atau seret ke sini
               </p>
-              <p className="text-label-sm font-mono-label text-ink-muted mt-1">
+              <p className="text-label-sm font-mono-label text-ink-muted dark:text-slate-400 mt-1">
                 Format standar RFC 4180 (UTF-8)
               </p>
             </div>
@@ -168,12 +168,12 @@ export const ImportCsvModal: React.FC<Props> = ({
 
         {/* Selected file preview info */}
         {file && (
-          <div className="flex items-center justify-between p-3 bg-surface border border-hairline rounded-md">
+          <div className="flex items-center justify-between p-3 bg-surface dark:bg-slate-800 border border-hairline dark:border-slate-700 rounded-md">
             <div className="flex items-center gap-2.5 overflow-hidden">
               <FileText className="w-4 h-4 text-action-primary flex-shrink-0" />
               <div className="truncate">
-                <p className="text-body-sm font-medium text-ink truncate">{file.name}</p>
-                <p className="text-label-sm font-mono-label text-ink-muted">
+                <p className="text-body-sm font-medium text-ink dark:text-slate-100 truncate">{file.name}</p>
+                <p className="text-label-sm font-mono-label text-ink-muted dark:text-slate-400">
                   {(file.size / 1024).toFixed(1)} KB · ± {Math.max(0, lineCount)} baris data
                 </p>
               </div>
@@ -181,7 +181,7 @@ export const ImportCsvModal: React.FC<Props> = ({
             <button
               type="button"
               onClick={handleReset}
-              className="text-label-sm font-mono-label text-status-overdue hover:underline ml-3 flex-shrink-0"
+              className="text-label-sm font-mono-label text-status-overdue dark:text-rose-400 hover:underline ml-3 flex-shrink-0"
             >
               Ganti
             </button>
@@ -198,18 +198,18 @@ export const ImportCsvModal: React.FC<Props> = ({
               onChange={(e) => setUpdateDuplicates(e.target.checked)}
               className="rounded border-hairline text-action-primary focus:ring-action-primary"
             />
-            <span className="text-body-sm text-ink font-medium">
-              Perbarui data jika URL lowongan (<code className="text-xs">job_url</code>) sudah ada
+            <span className="text-body-sm text-ink dark:text-slate-200 font-medium">
+              Perbarui data jika URL lowongan (<code className="text-xs bg-canvas dark:bg-slate-900/60 px-1 py-0.5 rounded">job_url</code>) sudah ada
             </span>
           </label>
-          <p className="text-label-sm text-ink-muted ml-6 mt-0.5">
+          <p className="text-label-sm text-ink-muted dark:text-slate-400 ml-6 mt-0.5">
             Jika tidak dicentang, data dengan URL lowongan yang sama akan otomatis dilewati tanpa mengubah data lama.
           </p>
         </div>
 
         {/* Error list */}
         {errors.length > 0 && (
-          <div className="p-3 bg-status-overdue-bg border border-status-overdue-border rounded text-body-sm text-status-overdue space-y-1 max-h-40 overflow-y-auto">
+          <div className="p-3 bg-status-overdue-bg dark:bg-rose-950/40 border border-status-overdue-border dark:border-rose-900/60 rounded text-body-sm text-status-overdue dark:text-rose-300 space-y-1 max-h-40 overflow-y-auto">
             <div className="flex items-center gap-1.5 font-medium">
               <AlertTriangle className="w-4 h-4 shrink-0" />
               <span>Gagal memproses file:</span>
@@ -223,7 +223,7 @@ export const ImportCsvModal: React.FC<Props> = ({
         )}
 
         {/* Action buttons */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-hairline">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-hairline dark:border-slate-700">
           <Button variant="ghost" onClick={handleClose} type="button">
             Batal
           </Button>

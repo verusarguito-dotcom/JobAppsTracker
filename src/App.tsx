@@ -13,6 +13,7 @@ import { ImportCsvButton } from './features/applications/components/ImportCsvBut
 import { ToastContainer } from './components/ui/Toast';
 import type { ToastMessage } from './components/ui/Toast';
 import { AppShell } from './components/layout/AppShell';
+import { ThemeToggle } from './components/ui/ThemeToggle';
 import { useViewRouter } from './hooks/useViewRouter';
 import { getTodayWIB } from './utils/date';
 import type { Application, ApplicationStatus } from './features/applications/types';
@@ -37,8 +38,8 @@ export const App: React.FC = () => {
   // Loading state
   if (authenticated === null) {
     return (
-      <div className="min-h-screen bg-canvas flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-ink/20 border-t-ink rounded-full animate-spin" />
+      <div className="min-h-screen bg-canvas dark:bg-[#0B132B] flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-ink/20 dark:border-slate-600 border-t-ink dark:border-t-slate-200 rounded-full animate-spin" />
       </div>
     );
   }
@@ -128,20 +129,21 @@ export const App: React.FC = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Cari lamaran pekerjaan"
-          className="w-full h-10 px-md bg-surface border border-hairline rounded text-body-md text-ink placeholder:text-ink-muted
+          className="w-full h-10 px-md bg-surface dark:bg-slate-800 border border-hairline dark:border-slate-700 rounded text-body-md text-ink dark:text-slate-100 placeholder:text-ink-muted dark:placeholder:text-slate-500
             focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
         />
       </div>
 
       {/* Mobile view header */}
       <div className="lg:hidden px-lg pt-sm pb-md flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-headline-sm font-geist text-ink font-semibold">
+        <h1 className="text-headline-sm font-geist text-ink dark:text-slate-100 font-semibold">
           {view === 'table' && `Daftar Lamaran (${applications.length})`}
           {view === 'kanban' && 'Kanban Board'}
           {view === 'analytics' && 'Analitik'}
           {view === 'archived' && 'Arsip'}
         </h1>
         <div className="flex items-center gap-1.5">
+          <ThemeToggle variant="default" />
           <ExportCsvButton onNotify={notify} compact />
           <ImportCsvButton onImportSuccess={reload} onNotify={notify} compact />
           {(view === 'table' || view === 'kanban') && (
@@ -159,7 +161,7 @@ export const App: React.FC = () => {
       {/* Desktop section header (for views other than table, which has its own command strip) */}
       {view !== 'table' && (
         <div className="hidden lg:flex items-center justify-between px-gutter-desktop pt-space-lg pb-space-sm">
-          <h1 className="text-headline-md font-headline-md text-on-surface font-semibold tracking-tight">
+          <h1 className="text-headline-md font-headline-md text-on-surface dark:text-slate-100 font-semibold tracking-tight">
             {view === 'kanban' && 'Kanban Board'}
             {view === 'analytics' && 'Analytics & Insights'}
             {view === 'archived' && 'Archived & Concluded'}

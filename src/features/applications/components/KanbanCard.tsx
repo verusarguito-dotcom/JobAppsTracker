@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { ExternalLink } from 'lucide-react';
 import { StatusChip } from '../../../components/ui/StatusChip';
 import { getDaysDiffWIB } from '../../../utils/date';
-import type { Application } from '../types';
+import type { Application, ApplicationStatus } from '../types';
 
 interface Props {
   app: Application;
@@ -48,11 +48,11 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-surface border border-hairline rounded-md p-md shadow-card hover:border-border-active hover:shadow-card-hover cursor-grab active:cursor-grabbing transition-all select-none"
+      className="bg-surface dark:bg-[#1E293B] border border-hairline dark:border-slate-700/80 rounded-md p-md shadow-card hover:border-border-active dark:hover:border-slate-500 hover:shadow-card-hover cursor-grab active:cursor-grabbing transition-all select-none"
     >
       {/* Header: company + urgency chip */}
       <div className="flex items-start justify-between gap-sm mb-1">
-        <span className="text-label-sm font-mono-label text-ink-secondary uppercase tracking-wider leading-tight line-clamp-1">
+        <span className="text-label-sm font-mono-label text-ink-secondary dark:text-slate-400 uppercase tracking-wider leading-tight line-clamp-1">
           {app.company_name}
         </span>
         {urgency && (
@@ -62,7 +62,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
 
       {/* Position title */}
       <p
-        className="text-headline-sm font-geist text-ink font-semibold leading-snug mb-md cursor-pointer hover:text-action-focus transition-colors"
+        className="text-headline-sm font-geist text-ink dark:text-slate-100 font-semibold leading-snug mb-md cursor-pointer hover:text-action-focus dark:hover:text-blue-400 transition-colors"
         onClick={(e) => {
           e.stopPropagation();
           onClick();
@@ -76,7 +76,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
 
       {/* Meta row */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-xs text-label-sm font-mono-label text-ink-muted">
+        <div className="flex items-center gap-xs text-label-sm font-mono-label text-ink-muted dark:text-slate-400">
           {app.job_type && (
             <span className="capitalize">{app.job_type}</span>
           )}
@@ -95,7 +95,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="w-6 h-6 flex items-center justify-center rounded text-ink-muted hover:text-action-focus hover:bg-action-focus-bg transition-colors"
+            className="w-6 h-6 flex items-center justify-center rounded text-ink-muted dark:text-slate-400 hover:text-action-focus dark:hover:text-blue-400 hover:bg-action-focus-bg dark:hover:bg-slate-800 transition-colors"
             aria-label={`Buka link ${app.company_name}`}
           >
             <ExternalLink className="w-3 h-3" />
@@ -106,7 +106,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
       {/* Quick Status Action for Mobile Touch / Non-drag users */}
       {onStatusChange && (
         <div
-          className="mt-3 pt-2 border-t border-hairline/70 flex items-center justify-between gap-1.5"
+          className="mt-3 pt-2 border-t border-hairline/70 dark:border-slate-700/60 flex items-center justify-between gap-1.5"
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
@@ -114,7 +114,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
         >
           <label
             htmlFor={`status-select-${app.id}`}
-            className="text-[11px] font-mono-label text-ink-muted uppercase tracking-wider select-none"
+            className="text-[11px] font-mono-label text-ink-muted dark:text-slate-400 uppercase tracking-wider select-none"
           >
             Pindah:
           </label>
@@ -132,7 +132,7 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) =>
             onPointerDown={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            className="text-[11px] font-mono-label bg-surface hover:bg-surface-sub text-ink border border-hairline rounded px-1.5 py-0.5 focus:outline-none focus:border-action-primary cursor-pointer transition-colors max-w-[150px]"
+            className="text-[11px] font-mono-label bg-surface dark:bg-slate-800 hover:bg-surface-sub dark:hover:bg-slate-700 text-ink dark:text-slate-200 border border-hairline dark:border-slate-700 rounded px-1.5 py-0.5 focus:outline-none focus:border-action-primary cursor-pointer transition-colors max-w-[150px]"
             aria-label={`Pindahkan status untuk ${app.company_name}`}
           >
             <option value="bookmarked">Bookmarked</option>

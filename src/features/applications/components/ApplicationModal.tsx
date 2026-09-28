@@ -22,10 +22,10 @@ interface Props {
 }
 
 const SELECT_CLASSES =
-  'w-full h-9 px-3 rounded bg-surface border border-border-active text-body-md text-ink focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors';
+  'w-full h-9 px-3 rounded bg-surface dark:bg-slate-800 border border-border-active dark:border-slate-700 text-body-md text-ink dark:text-slate-100 focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors';
 
 const LABEL_CLASSES =
-  'block text-label-md font-mono-label text-ink-secondary uppercase tracking-wider mb-1';
+  'block text-label-md font-mono-label text-ink-secondary dark:text-slate-400 uppercase tracking-wider mb-1';
 
 export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSaved, onDeleted }) => {
   const [formData, setFormData] = useState<any>({});
@@ -148,7 +148,7 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
       title={app ? 'Detail & Edit Lamaran' : 'Tambah Lamaran Baru'}
     >
       {error && (
-        <div className="mx-6 mt-4 p-3 bg-status-overdue-bg border border-status-overdue-border rounded text-body-sm text-status-overdue flex items-start gap-2">
+        <div className="mx-6 mt-4 p-3 bg-status-overdue-bg dark:bg-rose-950/40 border border-status-overdue-border dark:border-rose-900/60 rounded text-body-sm text-status-overdue dark:text-rose-300 flex items-start gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>{error}</div>
         </div>
@@ -265,18 +265,18 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             value={formData.notes || ''}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
             placeholder="Detail benefit, nama pewawancara, dll..."
-            className="w-full px-3 py-2 border border-border-active rounded text-body-md text-ink placeholder:text-ink-muted bg-surface focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
+            className="w-full px-3 py-2 border border-border-active dark:border-slate-700 rounded text-body-md text-ink dark:text-slate-100 placeholder:text-ink-muted dark:placeholder:text-slate-500 bg-surface dark:bg-slate-800 focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
           />
         </div>
 
         {/* Footer actions */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-hairline">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-hairline dark:border-slate-700">
           <div className="flex items-center gap-2">
             {app ? (
               <button
                 type="button"
                 onClick={handleDelete}
-                className="px-3 py-2 text-action-danger hover:bg-action-danger-bg rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
+                className="px-3 py-2 text-action-danger dark:text-rose-400 hover:bg-action-danger-bg dark:hover:bg-rose-950/40 rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
                 Hapus Lamaran
@@ -288,7 +288,7 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, status: 'bookmarked' })}
-                className="px-3 py-2 text-action-focus hover:bg-action-focus-bg rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
+                className="px-3 py-2 text-action-focus dark:text-blue-400 hover:bg-action-focus-bg dark:hover:bg-blue-950/40 rounded text-body-sm font-medium flex items-center gap-1.5 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
                 Pulihkan ke Tersimpan
@@ -309,8 +309,8 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
 
       {/* Activity log section */}
       {app && (
-        <div className="px-6 py-4 bg-canvas border-t border-hairline">
-          <h3 className="text-label-sm font-mono-label text-ink-muted uppercase tracking-wider flex items-center gap-1.5 mb-3">
+        <div className="px-6 py-4 bg-canvas dark:bg-slate-900/60 border-t border-hairline dark:border-slate-700">
+          <h3 className="text-label-sm font-mono-label text-ink-muted dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5 mb-3">
             <Clock className="w-4 h-4" />
             Riwayat Status & Catatan
           </h3>
@@ -322,7 +322,7 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
               value={newLogNote}
               onChange={(e) => setNewLogNote(e.target.value)}
               placeholder="Tambah catatan riwayat..."
-              className="flex-1 h-8 px-3 text-body-sm border border-hairline rounded bg-surface text-ink placeholder:text-ink-muted focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
+              className="flex-1 h-8 px-3 text-body-sm border border-hairline dark:border-slate-700 rounded bg-surface dark:bg-slate-800 text-ink dark:text-slate-100 placeholder:text-ink-muted dark:placeholder:text-slate-500 focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary/5 transition-colors"
               onKeyDown={(e) => e.key === 'Enter' && handleAddLog()}
             />
             <Button id="log-submit" type="button" size="sm" onClick={handleAddLog}>
@@ -334,19 +334,19 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             {logs.map((log) => (
               <div
                 key={log.id}
-                className="text-body-sm bg-surface p-2 rounded border border-hairline flex justify-between items-start gap-2"
+                className="text-body-sm bg-surface dark:bg-slate-800 p-2 rounded border border-hairline dark:border-slate-700 flex justify-between items-start gap-2"
               >
                 <div>
                   {log.old_status && log.new_status ? (
-                    <span className="font-semibold text-ink">
+                    <span className="font-semibold text-ink dark:text-slate-200">
                       {log.old_status} → {log.new_status}
                     </span>
                   ) : null}
                   {log.note && (
-                    <span className="text-ink-secondary ml-2">{log.note}</span>
+                    <span className="text-ink-secondary dark:text-slate-400 ml-2">{log.note}</span>
                   )}
                 </div>
-                <span className="text-label-sm font-mono-label text-ink-muted flex-shrink-0">
+                <span className="text-label-sm font-mono-label text-ink-muted dark:text-slate-500 flex-shrink-0">
                   {log.created_at?.split('T')[0]}
                 </span>
               </div>

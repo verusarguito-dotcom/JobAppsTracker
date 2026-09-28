@@ -1,9 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
+        // Executive Dark Theme tokens
+        'dark-canvas':              '#0B132B', // Deep midnight slate canvas
+        'dark-bg':                  '#0F172A', // Slate-900 background
+        'dark-surface':             '#1E293B', // Slate-800 container
+        'dark-surface-low':         '#162032', // Surface low container
+        'dark-surface-high':        '#27354E', // Surface high container
+        'dark-hairline':            '#334155', // Slate-700 hairline / borders
+        'dark-border-active':       '#475569', // Slate-600 active border
+        'dark-ink':                 '#F8FAFC', // Slate-50 primary text
+        'dark-ink-secondary':       '#94A3B8', // Slate-400 secondary text
+        'dark-ink-muted':           '#64748B', // Slate-500 muted text
+
         // Material 3 / Stitch tokens
         'primary':                  '#000000',
         'on-primary':               '#ffffff',

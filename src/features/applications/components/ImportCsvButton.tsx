@@ -25,12 +25,12 @@ export const ImportCsvButton: React.FC<Props> = ({
         onClick={() => setIsOpen(true)}
         className={
           className ||
-          'h-9 px-3 bg-surface hover:bg-surface-sub text-ink border border-hairline rounded text-body-sm font-geist font-medium transition-colors flex items-center gap-1.5'
+          'h-9 px-3 bg-surface dark:bg-slate-800 hover:bg-surface-sub dark:hover:bg-slate-700 text-ink dark:text-slate-200 border border-hairline dark:border-slate-700 rounded text-body-sm font-geist font-medium transition-colors flex items-center gap-1.5'
         }
         title="Import Lamaran dari File CSV"
         aria-label="Import data lamaran dari CSV"
       >
-        <Upload className="w-3.5 h-3.5 text-ink-muted" />
+        <Upload className="w-3.5 h-3.5 text-ink-muted dark:text-slate-400" />
         {!compact && <span>Import CSV</span>}
       </button>
 

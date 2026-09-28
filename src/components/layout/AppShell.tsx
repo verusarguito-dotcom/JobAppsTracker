@@ -31,7 +31,7 @@ export const AppShell: React.FC<Props> = ({
   onExport,
   children,
 }) => (
-  <div className="min-h-screen bg-background text-on-surface">
+  <div className="min-h-screen bg-background dark:bg-[#0B132B] text-on-surface dark:text-[#F8FAFC]">
     <Sidebar
       view={view}
       onViewChange={onViewChange}

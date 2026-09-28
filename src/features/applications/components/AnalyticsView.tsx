@@ -16,15 +16,15 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ label, value, sub, Icon, accent }) => (
-  <div className="bg-surface border border-hairline rounded-lg p-lg shadow-card">
+  <div className="bg-surface dark:bg-[#1E293B] border border-hairline dark:border-slate-700/80 rounded-lg p-lg shadow-card">
     <div className="flex items-start justify-between mb-md">
-      <p className="text-label-sm font-mono-label text-ink-muted uppercase tracking-wider">{label}</p>
+      <p className="text-label-sm font-mono-label text-ink-muted dark:text-slate-400 uppercase tracking-wider">{label}</p>
       <div className={`w-8 h-8 rounded flex items-center justify-center ${accent}`}>
         <Icon className="w-4 h-4" />
       </div>
     </div>
-    <p className="text-display font-geist text-ink font-semibold leading-none">{value}</p>
-    {sub && <p className="text-body-sm text-ink-secondary mt-xs">{sub}</p>}
+    <p className="text-display font-geist text-ink dark:text-slate-100 font-semibold leading-none">{value}</p>
+    {sub && <p className="text-body-sm text-ink-secondary dark:text-slate-400 mt-xs">{sub}</p>}
   </div>
 );
 
@@ -40,13 +40,13 @@ const FunnelStage: React.FC<FunnelStageProps> = ({ label, count, total, color })
   return (
     <div className="flex flex-col gap-xs">
       <div className="flex items-center justify-between text-body-sm">
-        <span className="text-ink-secondary capitalize">{label}</span>
-        <span className="font-mono-label text-ink">
+        <span className="text-ink-secondary dark:text-slate-400 capitalize">{label}</span>
+        <span className="font-mono-label text-ink dark:text-slate-200">
           {count}{' '}
-          <span className="text-ink-muted">({pct}%)</span>
+          <span className="text-ink-muted dark:text-slate-500">({pct}%)</span>
         </span>
       </div>
-      <div className="h-1.5 bg-canvas rounded-full overflow-hidden">
+      <div className="h-1.5 bg-canvas dark:bg-slate-800 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all ${color}`}
           style={{ width: `${pct}%` }}
@@ -118,21 +118,21 @@ export const AnalyticsView: React.FC<Props> = ({ applications }) => {
           value={stats.total}
           sub={`${stats.active} aktif`}
           Icon={Target}
-          accent="bg-canvas text-ink-secondary"
+          accent="bg-canvas dark:bg-slate-800 text-ink-secondary dark:text-slate-400"
         />
         <StatCard
           label="Interview Rate"
           value={`${stats.interviewRate}%`}
           sub={`${stats.interviews} interview`}
           Icon={TrendingUp}
-          accent="bg-action-focus-bg text-action-focus"
+          accent="bg-action-focus-bg dark:bg-blue-950/60 text-action-focus dark:text-blue-400"
         />
         <StatCard
           label="Offer Rate"
           value={`${stats.offerRate}%`}
           sub={`${stats.offers} offer`}
           Icon={Award}
-          accent="bg-status-offer-bg text-status-offer"
+          accent="bg-status-offer-bg dark:bg-emerald-950/60 text-status-offer dark:text-emerald-400"
         />
         <StatCard
           label="Perlu Tindakan"
@@ -141,15 +141,15 @@ export const AnalyticsView: React.FC<Props> = ({ applications }) => {
           Icon={Clock}
           accent={
             stats.overdue > 0
-              ? 'bg-status-overdue-bg text-status-overdue'
-              : 'bg-canvas text-ink-secondary'
+              ? 'bg-status-overdue-bg dark:bg-rose-950/60 text-status-overdue dark:text-rose-400'
+              : 'bg-canvas dark:bg-slate-800 text-ink-secondary dark:text-slate-400'
           }
         />
       </div>
 
       {/* Funnel */}
-      <div className="bg-surface border border-hairline rounded-lg p-lg shadow-card">
-        <h2 className="text-headline-sm font-geist text-ink font-semibold mb-lg">
+      <div className="bg-surface dark:bg-[#1E293B] border border-hairline dark:border-slate-700/80 rounded-lg p-lg shadow-card">
+        <h2 className="text-headline-sm font-geist text-ink dark:text-slate-100 font-semibold mb-lg">
           Pipeline Funnel
         </h2>
         <div className="flex flex-col gap-md">
@@ -160,18 +160,18 @@ export const AnalyticsView: React.FC<Props> = ({ applications }) => {
       </div>
 
       {/* Status breakdown */}
-      <div className="bg-surface border border-hairline rounded-lg p-lg shadow-card">
-        <h2 className="text-headline-sm font-geist text-ink font-semibold mb-lg">
+      <div className="bg-surface dark:bg-[#1E293B] border border-hairline dark:border-slate-700/80 rounded-lg p-lg shadow-card">
+        <h2 className="text-headline-sm font-geist text-ink dark:text-slate-100 font-semibold mb-lg">
           Breakdown Status
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-sm">
           {Object.entries(stats.byCounts).map(([status, count]) => (
             <div
               key={status}
-              className="flex items-center justify-between px-md py-sm bg-canvas rounded border border-hairline"
+              className="flex items-center justify-between px-md py-sm bg-canvas dark:bg-slate-900/60 rounded border border-hairline dark:border-slate-800"
             >
-              <span className="text-body-sm text-ink-secondary capitalize">{status}</span>
-              <span className="text-label-md font-mono-label text-ink">{count}</span>
+              <span className="text-body-sm text-ink-secondary dark:text-slate-400 capitalize">{status}</span>
+              <span className="text-label-md font-mono-label text-ink dark:text-slate-200">{count}</span>
             </div>
           ))}
         </div>
