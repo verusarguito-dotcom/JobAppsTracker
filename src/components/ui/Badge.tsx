@@ -5,10 +5,10 @@ interface BadgeProps {
   className?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ children, className = '' }) => {
-  return (
-    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium capitalize ${className}`}>
-      {children}
-    </span>
-  );
-};
+export const Badge: React.FC<BadgeProps> = ({ children, className = '' }) => (
+  <span
+    className={`inline-flex items-center px-1.5 h-5 rounded text-label-sm font-mono-label uppercase tracking-wider border ${className}`}
+  >
+    {children}
+  </span>
+);
