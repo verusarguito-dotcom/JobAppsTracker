@@ -110,7 +110,7 @@ export function updateApplication(
   expectedVersion: number,
 ): UpdateResult {
   const sets: string[] = [];
-  const values: unknown[] = [];
+  const values: any[] = [];
 
   for (const col of UPDATABLE_COLUMNS) {
     if (!(col in input)) continue;
