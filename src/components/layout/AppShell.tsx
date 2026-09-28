@@ -12,28 +12,45 @@ interface Props {
   search: string;
   onSearchChange: (v: string) => void;
   applicationCount: number;
+  archivedCount?: number;
+  onSync?: () => void;
+  onExport?: () => void;
   children: React.ReactNode;
 }
 
 export const AppShell: React.FC<Props> = ({
-  view, onViewChange, onNewApplication, onLogout,
-  search, onSearchChange, applicationCount, children,
+  view,
+  onViewChange,
+  onNewApplication,
+  onLogout,
+  search,
+  onSearchChange,
+  applicationCount,
+  archivedCount = 0,
+  onSync,
+  onExport,
+  children,
 }) => (
-  <div className="min-h-screen bg-canvas">
+  <div className="min-h-screen bg-background text-on-surface">
     <Sidebar
       view={view}
       onViewChange={onViewChange}
       onNewApplication={onNewApplication}
       onLogout={onLogout}
       applicationCount={applicationCount}
+      archivedCount={archivedCount}
+      onSync={onSync}
+      onExport={onExport}
     />
     <TopBar
       search={search}
       onSearchChange={onSearchChange}
       onLogout={onLogout}
+      onSync={onSync}
+      onExport={onExport}
     />
-    {/* Main content: offset by sidebar width on desktop, add bottom padding for mobile nav */}
-    <main className="lg:ml-60 lg:pt-14 pb-20 lg:pb-8 min-h-screen">
+    {/* Main content: offset by sidebar width on desktop (64 = 16rem), add bottom padding for mobile nav */}
+    <main className="lg:ml-64 lg:pt-16 pb-20 lg:pb-8 min-h-screen">
       {children}
     </main>
     <BottomNav view={view} onViewChange={onViewChange} />

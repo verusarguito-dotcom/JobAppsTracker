@@ -4,17 +4,67 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Surface tiers (Slate-based)
+        // Material 3 / Stitch tokens
+        'primary':                  '#000000',
+        'on-primary':               '#ffffff',
+        'primary-container':        '#131b2e',
+        'on-primary-container':     '#7c839b',
+        'primary-fixed':            '#dae2fd',
+        'primary-fixed-dim':        '#bec6e0',
+        'on-primary-fixed':         '#131b2e',
+        'on-primary-fixed-variant': '#3f465c',
+        'secondary':                '#4e45d5',
+        'on-secondary':             '#ffffff',
+        'secondary-container':      '#6860ef',
+        'on-secondary-container':   '#fffbff',
+        'secondary-fixed':          '#e3dfff',
+        'secondary-fixed-dim':      '#c3c0ff',
+        'on-secondary-fixed':       '#100069',
+        'on-secondary-fixed-variant':'#372abf',
+        'tertiary':                 '#000000',
+        'on-tertiary':              '#ffffff',
+        'tertiary-container':       '#002114',
+        'on-tertiary-container':    '#069669',
+        'tertiary-fixed':           '#85f8c4',
+        'tertiary-fixed-dim':       '#68dba9',
+        'on-tertiary-fixed':        '#002114',
+        'on-tertiary-fixed-variant':'#005137',
+        'error':                    '#ba1a1a',
+        'on-error':                 '#ffffff',
+        'error-container':          '#ffdad6',
+        'on-error-container':       '#93000a',
+        'background':               '#f8f9ff',
+        'on-background':            '#0b1c30',
+        'surface-dim':              '#cbdbf5',
+        'surface-bright':           '#f8f9ff',
+        'surface-variant':          '#d3e4fe',
+        'surface-container-lowest': '#ffffff',
+        'surface-container-low':    '#eff4ff',
+        'surface-container':        '#e5eeff',
+        'surface-container-high':   '#dce9ff',
+        'surface-container-highest':'#d3e4fe',
+        'on-surface':               '#0b1c30',
+        'on-surface-variant':       '#45464d',
+        'inverse-surface':          '#213145',
+        'inverse-on-surface':       '#eaf1ff',
+        'inverse-primary':          '#bec6e0',
+        'outline':                  '#76777d',
+        'outline-variant':          '#c6c6cd',
+        'surface-tint':             '#565e74',
+
+        // Surface tiers (Slate-based backward compatibility)
         'canvas':          '#F8FAFC', // App background (Slate 50)
         'surface':         '#FFFFFF', // Card / container
         'surface-sub':     '#F1F5F9', // Inactive fill (Slate 100)
         'hairline':        '#E2E8F0', // Layout dividers (Slate 200)
         'border-active':   '#CBD5E1', // Interactive element borders (Slate 300)
-        // Text
+
+        // Text (backward compatibility)
         'ink':             '#0F172A', // Primary text (Slate 900)
         'ink-secondary':   '#475569', // Metadata text (Slate 600)
         'ink-muted':       '#94A3B8', // Placeholder (Slate 400)
-        // Semantic status
+
+        // Semantic status (backward compatibility)
         'status-overdue':         '#BE123C',
         'status-overdue-bg':      '#FFF1F2',
         'status-overdue-border':  '#FECDD3',
@@ -27,7 +77,8 @@ export default {
         'status-neutral':         '#475569',
         'status-neutral-bg':      '#F1F5F9',
         'status-neutral-border':  '#E2E8F0',
-        // Actions
+
+        // Actions (backward compatibility)
         'action-primary':        '#0F172A',
         'action-primary-hover':  '#1E293B',
         'action-focus':          '#4338CA',
@@ -39,6 +90,15 @@ export default {
       fontFamily: {
         'geist':      ['Geist', 'system-ui', 'sans-serif'],
         'mono-label': ['"JetBrains Mono"', 'monospace'],
+        'display':    ['Geist', 'system-ui', 'sans-serif'],
+        'headline-lg':['Geist', 'system-ui', 'sans-serif'],
+        'headline-md':['Geist', 'system-ui', 'sans-serif'],
+        'headline-sm':['Geist', 'system-ui', 'sans-serif'],
+        'body-lg':    ['Geist', 'system-ui', 'sans-serif'],
+        'body-md':    ['Geist', 'system-ui', 'sans-serif'],
+        'body-sm':    ['Geist', 'system-ui', 'sans-serif'],
+        'label-md':   ['"JetBrains Mono"', 'monospace'],
+        'label-sm':   ['"JetBrains Mono"', 'monospace'],
       },
       fontSize: {
         'display':     ['2.25rem',   { lineHeight: '2.75rem',  letterSpacing: '-0.025em', fontWeight: '600' }],
@@ -53,8 +113,10 @@ export default {
       },
       borderRadius: {
         DEFAULT: '0.25rem',
+        'sm':    '0.125rem',
         'md':    '0.375rem',
         'lg':    '0.5rem',
+        'xl':    '0.75rem',
         'full':  '9999px',
       },
       boxShadow: {
@@ -70,6 +132,15 @@ export default {
         'lg':  '1rem',
         'xl':  '1.5rem',
         'xxl': '2rem',
+        'space-xs': '0.25rem',
+        'space-sm': '0.5rem',
+        'space-md': '0.75rem',
+        'space-lg': '1rem',
+        'space-xl': '1.5rem',
+        'gutter': '1rem',
+        'gutter-desktop': '1.5rem',
+        'margin': '1rem',
+        'margin-desktop': '2rem',
       },
     },
   },

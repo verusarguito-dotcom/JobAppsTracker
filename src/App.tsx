@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './features/auth/hooks/useAuth';
 import { LoginModal } from './features/auth/components/LoginModal';
 import { useApplications } from './features/applications/hooks/useApplications';
-import { updateApplicationApi } from './features/applications/api';
+import { updateApplicationApi, exportApplicationsCsvApi } from './features/applications/api';
 import { TableView } from './features/applications/components/TableView';
 import { KanbanBoard } from './features/applications/components/KanbanBoard';
 import { AnalyticsView } from './features/applications/components/AnalyticsView';
@@ -82,8 +82,29 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleSync = async () => {
+    try {
+      await reload();
+      notify('success', 'Pipeline synced with database.');
+    } catch (err: any) {
+      notify('error', err.message || 'Gagal sinkronisasi data.');
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      await exportApplicationsCsvApi();
+      notify('success', 'Data lamaran berhasil diexport ke CSV.');
+    } catch (err: any) {
+      notify('error', err.message || 'Gagal export CSV.');
+    }
+  };
+
   // Total count: use all applications (before search filter) for sidebar badge
   const totalCount = rawCount;
+  const archivedCount = applications.filter((a) =>
+    ['rejected', 'withdrawn', 'ghosted'].includes(a.status),
+  ).length;
 
   return (
     <AppShell
@@ -94,6 +115,9 @@ export const App: React.FC = () => {
       search={search}
       onSearchChange={setSearch}
       applicationCount={totalCount}
+      archivedCount={archivedCount}
+      onSync={handleSync}
+      onExport={handleExport}
     >
       {/* Mobile search bar */}
       <div className="lg:hidden px-lg pt-lg pb-sm">
@@ -132,32 +156,33 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Desktop section header */}
-      <div className="hidden lg:flex items-center justify-between px-xxl pt-lg pb-sm">
-        <h1 className="text-headline-sm font-geist text-ink font-semibold">
-          {view === 'table' && (
-            <>
-              Daftar Lamaran
-              <span className="ml-sm text-ink-muted font-mono-label text-label-sm">
-                ({applications.length} dari {rawCount})
-              </span>
-            </>
-          )}
-          {view === 'kanban' && 'Kanban Board'}
-          {view === 'analytics' && 'Analitik & Insights'}
-          {view === 'archived' && 'Arsip Lamaran'}
-        </h1>
-        <div className="flex items-center gap-sm">
-          <ExportCsvButton onNotify={notify} />
-          <ImportCsvButton onImportSuccess={reload} onNotify={notify} />
+      {/* Desktop section header (for views other than table, which has its own command strip) */}
+      {view !== 'table' && (
+        <div className="hidden lg:flex items-center justify-between px-gutter-desktop pt-space-lg pb-space-sm">
+          <h1 className="text-headline-md font-headline-md text-on-surface font-semibold tracking-tight">
+            {view === 'kanban' && 'Kanban Board'}
+            {view === 'analytics' && 'Analytics & Insights'}
+            {view === 'archived' && 'Archived & Concluded'}
+          </h1>
+          <div className="flex items-center gap-sm">
+            <ExportCsvButton onNotify={notify} />
+            <ImportCsvButton onImportSuccess={reload} onNotify={notify} />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* View router */}
-      <div className="lg:px-xxl">
+      <div className="px-margin lg:px-gutter-desktop">
         {view === 'table' && (
-          <div className="px-lg pb-lg lg:px-0">
-            <TableView applications={applications} onSelectApplication={openApplication} />
+          <div className="pt-space-md pb-space-lg">
+            <TableView
+              applications={applications}
+              onSelectApplication={openApplication}
+              onViewChange={setView}
+              onNewApplication={openNewApplication}
+              onNotify={notify}
+              onReload={reload}
+            />
           </div>
         )}
         {view === 'kanban' && (
