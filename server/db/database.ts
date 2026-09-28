@@ -24,7 +24,10 @@ export function initDatabase(customPath?: string): DatabaseSync {
   db.prepare('PRAGMA foreign_keys = ON').get();
   db.prepare('PRAGMA busy_timeout = 5000').get();
 
-  const schemaPath = path.resolve(__dirname, 'schema.sql');
+  let schemaPath = path.resolve(__dirname, 'schema.sql');
+  if (!fs.existsSync(schemaPath)) {
+    schemaPath = path.resolve(process.cwd(), 'server/db/schema.sql');
+  }
   const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
   db.exec(schemaSql);
 
