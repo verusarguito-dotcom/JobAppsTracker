@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  tracker:
+    image: localhost/job-application-tracker:latest
+    container_name: job-tracker
+    restart: unless-stopped
+    ports:
+      # STRICT LOCALHOST BINDING - Only accessible locally or via SSH tunnel
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./data:/app/data:Z
+    environment:
+      - PORT=3000
+      - HOST=127.0.0.1
+      - DATA_DIR=/app/data
+      - TRUST_PROXY=0
+      - SESSION_SECRET=${SESSION_SECRET}
+      # Notice the $$ escape to prevent compose parsing truncation:
+      - APP_PASSWORD_HASH=${APP_PASSWORD_HASH}
