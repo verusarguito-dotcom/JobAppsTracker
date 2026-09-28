@@ -8,8 +8,13 @@ import { KanbanBoard } from './features/applications/components/KanbanBoard';
 import { AnalyticsView } from './features/applications/components/AnalyticsView';
 import { ArchivedView } from './features/applications/components/ArchivedView';
 import { ApplicationModal } from './features/applications/components/ApplicationModal';
+import { ExportCsvButton } from './features/applications/components/ExportCsvButton';
+import { ImportCsvButton } from './features/applications/components/ImportCsvButton';
+import { ToastContainer } from './components/ui/Toast';
+import type { ToastMessage } from './components/ui/Toast';
 import { AppShell } from './components/layout/AppShell';
 import { useViewRouter } from './hooks/useViewRouter';
+import { getTodayWIB } from './utils/date';
 import type { Application, ApplicationStatus } from './features/applications/types';
 
 export const App: React.FC = () => {
@@ -18,6 +23,16 @@ export const App: React.FC = () => {
   const { view, setView } = useViewRouter('table');
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const notify = (type: 'success' | 'error' | 'info', message: string) => {
+    const id = Math.random().toString(36).substring(2, 9);
+    setToasts((prev) => [...prev, { id, type, message }]);
+  };
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   // Loading state
   if (authenticated === null) {
@@ -49,10 +64,21 @@ export const App: React.FC = () => {
     version: number,
   ) => {
     try {
-      await updateApplicationApi(id, { status, version } as any);
+      const app = applications.find((a) => a.id === id);
+      const isTransitioningFromBookmarked =
+        app?.status === 'bookmarked' &&
+        ['applied', 'screening', 'interview', 'offer'].includes(status);
+      const payload: any = { status, version };
+
+      if (isTransitioningFromBookmarked && !app?.applied_date) {
+        payload.applied_date = getTodayWIB();
+      }
+
+      await updateApplicationApi(id, payload);
       await reload();
-    } catch {
-      // Silently ignore — user can drag again or refresh
+      notify('success', `Status berhasil diubah ke ${status}.`);
+    } catch (err: any) {
+      notify('error', err.message || 'Gagal mengubah status.');
     }
   };
 
@@ -84,22 +110,26 @@ export const App: React.FC = () => {
       </div>
 
       {/* Mobile view header */}
-      <div className="lg:hidden px-lg pt-sm pb-md flex items-center justify-between">
+      <div className="lg:hidden px-lg pt-sm pb-md flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-headline-sm font-geist text-ink font-semibold">
           {view === 'table' && `Daftar Lamaran (${applications.length})`}
           {view === 'kanban' && 'Kanban Board'}
           {view === 'analytics' && 'Analitik'}
           {view === 'archived' && 'Arsip'}
         </h1>
-        {(view === 'table' || view === 'kanban') && (
-          <button
-            id="add-application-btn-mobile"
-            onClick={openNewApplication}
-            className="h-9 px-md bg-action-primary hover:bg-action-primary-hover text-white rounded text-body-sm font-geist font-medium transition-colors flex items-center gap-xs"
-          >
-            + Tambah
-          </button>
-        )}
+        <div className="flex items-center gap-1.5">
+          <ExportCsvButton onNotify={notify} compact />
+          <ImportCsvButton onImportSuccess={reload} onNotify={notify} compact />
+          {(view === 'table' || view === 'kanban') && (
+            <button
+              id="add-application-btn-mobile"
+              onClick={openNewApplication}
+              className="h-9 px-md bg-action-primary hover:bg-action-primary-hover text-white rounded text-body-sm font-geist font-medium transition-colors flex items-center gap-xs"
+            >
+              + Tambah
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Desktop section header */}
@@ -117,6 +147,10 @@ export const App: React.FC = () => {
           {view === 'analytics' && 'Analitik & Insights'}
           {view === 'archived' && 'Arsip Lamaran'}
         </h1>
+        <div className="flex items-center gap-sm">
+          <ExportCsvButton onNotify={notify} />
+          <ImportCsvButton onImportSuccess={reload} onNotify={notify} />
+        </div>
       </div>
 
       {/* View router */}
@@ -150,6 +184,9 @@ export const App: React.FC = () => {
         onSaved={reload}
         onDeleted={reload}
       />
+
+      {/* Toast notifications */}
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </AppShell>
   );
 };

@@ -10,6 +10,7 @@ import {
   getApplicationLogsApi,
   addApplicationLogApi,
 } from '../api';
+import { getTodayWIB } from '../../../utils/date';
 import type { Application, ApplicationLog } from '../types';
 
 interface Props {
@@ -81,6 +82,12 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
       salary_min: formData.salary_min !== '' ? parseInt(formData.salary_min, 10) : null,
       salary_max: formData.salary_max !== '' ? parseInt(formData.salary_max, 10) : null,
     };
+
+    const wasBookmarked = app ? app.status === 'bookmarked' : (formData.status === 'bookmarked' || !formData.status);
+    const isMovingToNext = ['applied', 'screening', 'interview', 'offer'].includes(payload.status);
+    if (wasBookmarked && isMovingToNext && !payload.applied_date) {
+      payload.applied_date = getTodayWIB();
+    }
 
     try {
       if (app) {
@@ -161,7 +168,17 @@ export const ApplicationModal: React.FC<Props> = ({ app, isOpen, onClose, onSave
             <select
               id="app-status"
               value={formData.status || 'bookmarked'}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              onChange={(e) => {
+                const nextStatus = e.target.value;
+                const wasBookmarked = app ? app.status === 'bookmarked' : (formData.status === 'bookmarked' || !formData.status);
+                const isMovingToNext = ['applied', 'screening', 'interview', 'offer'].includes(nextStatus);
+                const shouldAutoFill = wasBookmarked && isMovingToNext && !formData.applied_date;
+                setFormData({
+                  ...formData,
+                  status: nextStatus,
+                  ...(shouldAutoFill ? { applied_date: getTodayWIB() } : {}),
+                });
+              }}
               className={SELECT_CLASSES}
             >
               <option value="bookmarked">Bookmarked</option>

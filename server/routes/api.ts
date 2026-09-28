@@ -19,9 +19,17 @@ import {
   deleteApplication,
   getApplicationLogs,
   addApplicationLog,
+  getAllLogsWithApplicationInfo,
+  importApplications,
 } from '../repositories/applicationsRepo.js';
 import type { DbFailure } from '../repositories/applicationsRepo.js';
 import { createAtomicBackup } from '../db/database.js';
+import {
+  exportApplicationsToCsv,
+  exportLogsToCsv,
+  parseCsvToApplications,
+} from '../utils/csv.js';
+import { getTodayWIB } from '../utils/date.js';
 
 function sendFailure(res: Response, f: DbFailure): void {
   switch (f.reason) {
@@ -135,6 +143,75 @@ export function createApiRouter(db: DatabaseSync): Router {
     addApplicationLog(db, req.params.id, note);
     const logs = getApplicationLogs(db, req.params.id);
     res.status(201).json(logs);
+  });
+
+  // Export CSV Routes
+  const handleExportApplicationsCsv = (_req: any, res: Response) => {
+    const apps = getAllApplications(db);
+    const csvData = exportApplicationsToCsv(apps);
+    const today = getTodayWIB();
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="jobflow-applications-${today}.csv"`);
+    res.status(200).send(csvData);
+  };
+
+  router.get('/export/csv', handleExportApplicationsCsv);
+  router.get('/export/applications/csv', handleExportApplicationsCsv);
+
+  router.get('/export/logs/csv', (_req, res) => {
+    const logs = getAllLogsWithApplicationInfo(db);
+    const csvData = exportLogsToCsv(logs);
+    const today = getTodayWIB();
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="jobflow-logs-${today}.csv"`);
+    res.status(200).send(csvData);
+  });
+
+  // Import CSV Route
+  router.post('/import/csv', (req, res) => {
+    let csvContent = '';
+    let updateDuplicates = false;
+
+    if (typeof req.body === 'string') {
+      csvContent = req.body;
+    } else if (req.body && typeof req.body === 'object') {
+      csvContent = req.body.csv || '';
+      updateDuplicates = Boolean(req.body.update_duplicates);
+    }
+
+    if (req.query.on_conflict === 'update') {
+      updateDuplicates = true;
+    }
+
+    if (!csvContent || !csvContent.trim()) {
+      res.status(400).json({ error: 'validation', message: 'Konten CSV tidak boleh kosong.' });
+      return;
+    }
+
+    const { data, errors } = parseCsvToApplications(csvContent);
+
+    if (errors.length > 0) {
+      res.status(400).json({
+        error: 'validation',
+        message: 'Validasi skema CSV gagal.',
+        details: errors,
+      });
+      return;
+    }
+
+    if (data.length === 0) {
+      res.status(400).json({
+        error: 'validation',
+        message: 'File CSV tidak memiliki baris data yang dapat diimpor.',
+      });
+      return;
+    }
+
+    const result = importApplications(db, data, { updateDuplicates });
+    res.json({
+      message: `Impor selesai. ${result.imported} ditambahkan, ${result.updated} diperbarui, ${result.skipped} dilewati.`,
+      ...result,
+    });
   });
 
   // Backup Engine (Mutasi di POST, Download di GET read-only)

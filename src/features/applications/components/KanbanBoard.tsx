@@ -5,6 +5,7 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   closestCorners,
@@ -29,6 +30,21 @@ const ACTIVE_COLUMNS: { status: ApplicationStatus; label: string }[] = [
 
 const ACTIVE_STATUSES = new Set(ACTIVE_COLUMNS.map((c) => c.status));
 
+class MobileFriendlyPointerSensor extends PointerSensor {
+  static activators = [
+    {
+      eventName: 'onPointerDown' as const,
+      handler: ({ nativeEvent: event }: { nativeEvent: PointerEvent }) => {
+        // Disallow touch events so TouchSensor handles touch with delay/tolerance
+        if (!event.isPrimary || event.button !== 0 || event.pointerType === 'touch') {
+          return false;
+        }
+        return true;
+      },
+    },
+  ];
+}
+
 export const KanbanBoard: React.FC<Props> = ({
   applications,
   onSelectApplication,
@@ -37,7 +53,13 @@ export const KanbanBoard: React.FC<Props> = ({
   const [activeApp, setActiveApp] = useState<Application | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(MobileFriendlyPointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
   );
 
   // Only show active pipeline statuses
@@ -56,9 +78,9 @@ export const KanbanBoard: React.FC<Props> = ({
     const draggedApp = activeApps.find((a) => a.id === active.id);
     // over.id might be a column id (ApplicationStatus) or a card id
     // Try to resolve the target column from over.id
-    const targetStatus = ACTIVE_COLUMNS.find(
-      (c) => c.status === over.id,
-    )?.status;
+    const targetStatus =
+      ACTIVE_COLUMNS.find((c) => c.status === over.id)?.status ||
+      activeApps.find((a) => a.id === over.id)?.status;
 
     if (!draggedApp || !targetStatus) return;
     if (draggedApp.status === targetStatus) return;
@@ -84,6 +106,7 @@ export const KanbanBoard: React.FC<Props> = ({
             label={label}
             apps={activeApps.filter((a) => a.status === status)}
             onSelectApplication={onSelectApplication}
+            onStatusChange={onStatusChange}
           />
         ))}
 

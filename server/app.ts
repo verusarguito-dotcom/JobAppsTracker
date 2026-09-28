@@ -12,7 +12,8 @@ export function createApp(db: DatabaseSync) {
     app.set('trust proxy', 1);
   }
 
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.text({ type: ['text/csv', 'text/plain'], limit: '10mb' }));
   app.use(cookieParser(getSessionSecret()));
 
   app.use('/api', createApiRouter(db));

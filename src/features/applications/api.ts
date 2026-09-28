@@ -56,3 +56,72 @@ export async function addApplicationLogApi(id: string, note: string): Promise<Ap
   if (!res.ok) throw new Error('Gagal menambahkan catatan.');
   return res.json();
 }
+
+export async function exportApplicationsCsvApi(): Promise<void> {
+  const res = await fetch('/api/export/csv');
+  if (!res.ok) throw new Error('Gagal mengunduh file CSV.');
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const disposition = res.headers.get('Content-Disposition');
+  let filename = 'jobflow-applications.csv';
+  if (disposition && disposition.includes('filename=')) {
+    const match = disposition.match(/filename="?([^"]+)"?/);
+    if (match?.[1]) filename = match[1];
+  }
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
+
+export async function exportLogsCsvApi(): Promise<void> {
+  const res = await fetch('/api/export/logs/csv');
+  if (!res.ok) throw new Error('Gagal mengunduh file CSV log.');
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const disposition = res.headers.get('Content-Disposition');
+  let filename = 'jobflow-logs.csv';
+  if (disposition && disposition.includes('filename=')) {
+    const match = disposition.match(/filename="?([^"]+)"?/);
+    if (match?.[1]) filename = match[1];
+  }
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+}
+
+export interface ImportCsvResponse {
+  ok: boolean;
+  total: number;
+  imported: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
+  message: string;
+}
+
+export async function importApplicationsCsvApi(
+  csvContent: string,
+  options?: { updateDuplicates?: boolean },
+): Promise<ImportCsvResponse> {
+  const url = options?.updateDuplicates ? '/api/import/csv?on_conflict=update' : '/api/import/csv';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/csv' },
+    body: csvContent,
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const errorMsg = data.details ? data.details.join('\n') : (data.message || 'Gagal mengimpor CSV.');
+    throw new Error(errorMsg);
+  }
+  return data;
+}
+

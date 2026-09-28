@@ -9,6 +9,7 @@ import type { Application } from '../types';
 interface Props {
   app: Application;
   onClick: () => void;
+  onStatusChange?: (id: string, status: ApplicationStatus, version: number) => Promise<void> | void;
 }
 
 function getUrgencyChip(
@@ -23,7 +24,7 @@ function getUrgencyChip(
   return null;
 }
 
-export const KanbanCard: React.FC<Props> = ({ app, onClick }) => {
+export const KanbanCard: React.FC<Props> = ({ app, onClick, onStatusChange }) => {
   const {
     attributes,
     listeners,
@@ -101,6 +102,51 @@ export const KanbanCard: React.FC<Props> = ({ app, onClick }) => {
           </a>
         )}
       </div>
+
+      {/* Quick Status Action for Mobile Touch / Non-drag users */}
+      {onStatusChange && (
+        <div
+          className="mt-3 pt-2 border-t border-hairline/70 flex items-center justify-between gap-1.5"
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <label
+            htmlFor={`status-select-${app.id}`}
+            className="text-[11px] font-mono-label text-ink-muted uppercase tracking-wider select-none"
+          >
+            Pindah:
+          </label>
+          <select
+            id={`status-select-${app.id}`}
+            value={app.status}
+            onChange={(e) => {
+              e.stopPropagation();
+              const nextStatus = e.target.value as ApplicationStatus;
+              if (nextStatus !== app.status) {
+                onStatusChange(app.id, nextStatus, app.version);
+              }
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            className="text-[11px] font-mono-label bg-surface hover:bg-surface-sub text-ink border border-hairline rounded px-1.5 py-0.5 focus:outline-none focus:border-action-primary cursor-pointer transition-colors max-w-[150px]"
+            aria-label={`Pindahkan status untuk ${app.company_name}`}
+          >
+            <option value="bookmarked">Bookmarked</option>
+            <option value="applied">Applied</option>
+            <option value="screening">Screening</option>
+            <option value="interview">Interview</option>
+            <option value="offer">Offer</option>
+            <option value="accepted">Accepted</option>
+            <option value="rejected">Rejected</option>
+            <option value="ghosted">Ghosted</option>
+            <option value="withdrawn">Withdrawn</option>
+          </select>
+        </div>
+      )}
     </div>
   );
 };

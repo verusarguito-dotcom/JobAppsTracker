@@ -9,9 +9,16 @@ interface Props {
   label: string;
   apps: Application[];
   onSelectApplication: (app: Application) => void;
+  onStatusChange?: (id: string, status: ApplicationStatus, version: number) => Promise<void> | void;
 }
 
-export const KanbanColumn: React.FC<Props> = ({ status, label, apps, onSelectApplication }) => {
+export const KanbanColumn: React.FC<Props> = ({
+  status,
+  label,
+  apps,
+  onSelectApplication,
+  onStatusChange,
+}) => {
   const { setNodeRef, isOver } = useDroppable({ id: status });
 
   return (
@@ -43,6 +50,7 @@ export const KanbanColumn: React.FC<Props> = ({ status, label, apps, onSelectApp
               key={app.id}
               app={app}
               onClick={() => onSelectApplication(app)}
+              onStatusChange={onStatusChange}
             />
           ))}
         </SortableContext>

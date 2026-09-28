@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import type { DatabaseSync } from 'node:sqlite';
 import { normalizeJobUrl } from '../utils/url.js';
+import { getTodayWIB } from '../utils/date.js';
 
 const UPDATABLE_COLUMNS = [
   'company_name', 'position_title', 'status', 'job_type', 'location',
@@ -64,6 +65,12 @@ export function getApplicationByUrl(db: DatabaseSync, rawUrl: string): any | nul
 export function createApplication(db: DatabaseSync, input: Record<string, any>): any {
   const id = crypto.randomUUID();
   const cleanUrl = normalizeJobUrl(input.job_url);
+  const status = input.status || 'bookmarked';
+
+  let appliedDate = input.applied_date || null;
+  if (!appliedDate && ['applied', 'screening', 'interview', 'offer'].includes(status)) {
+    appliedDate = getTodayWIB();
+  }
 
   const stmt = db.prepare(`
     INSERT INTO applications (
@@ -83,7 +90,7 @@ export function createApplication(db: DatabaseSync, input: Record<string, any>):
     id,
     input.company_name?.trim(),
     input.position_title?.trim(),
-    input.status || 'bookmarked',
+    status,
     input.job_type || null,
     input.location?.trim() || null,
     input.salary_min !== undefined && input.salary_min !== null && input.salary_min !== '' ? Number(input.salary_min) : null,
@@ -92,7 +99,7 @@ export function createApplication(db: DatabaseSync, input: Record<string, any>):
     cleanUrl,
     input.source?.trim() || null,
     input.deadline_date || null,
-    input.applied_date || null,
+    appliedDate,
     input.follow_up_date || null,
     input.recruiter_name?.trim() || null,
     input.recruiter_contact?.trim() || null,
@@ -109,6 +116,20 @@ export function updateApplication(
   input: Record<string, unknown>,
   expectedVersion: number,
 ): UpdateResult {
+  const current = getApplicationById(db, id);
+  if (!current) {
+    return { ok: false, reason: 'not_found' };
+  }
+
+  // Workflow auto-fill: moving from bookmarked to active pipeline defaults applied_date to today WIB if empty
+  const isTransitioningFromBookmarked =
+    current.status === 'bookmarked' &&
+    ['applied', 'screening', 'interview', 'offer'].includes(input.status as string);
+
+  if (isTransitioningFromBookmarked && !current.applied_date && !input.applied_date) {
+    input = { ...input, applied_date: getTodayWIB() };
+  }
+
   const sets: string[] = [];
   const values: any[] = [];
 
@@ -136,9 +157,9 @@ export function updateApplication(
       .run(...values, id, expectedVersion);
 
     if ((result as any).changes === 0) {
-      const current = getApplicationById(db, id);
-      return current
-        ? { ok: false, reason: 'conflict', data: current }
+      const refreshed = getApplicationById(db, id);
+      return refreshed
+        ? { ok: false, reason: 'conflict', data: refreshed }
         : { ok: false, reason: 'not_found' };
     }
     return { ok: true, data: getApplicationById(db, id) };
@@ -156,9 +177,93 @@ export function getApplicationLogs(db: DatabaseSync, applicationId: string): any
   return db.prepare('SELECT * FROM application_logs WHERE application_id = ? ORDER BY created_at DESC').all(applicationId) as any[];
 }
 
+export function getAllLogsWithApplicationInfo(db: DatabaseSync): any[] {
+  return db.prepare(`
+    SELECT
+      l.id,
+      l.application_id,
+      a.company_name,
+      a.position_title,
+      l.old_status,
+      l.new_status,
+      l.note,
+      l.created_at
+    FROM application_logs l
+    LEFT JOIN applications a ON l.application_id = a.id
+    ORDER BY l.created_at DESC
+  `).all() as any[];
+}
+
 export function addApplicationLog(db: DatabaseSync, applicationId: string, note: string): any {
   db.prepare(`
     INSERT INTO application_logs (application_id, old_status, new_status, note)
     VALUES (?, NULL, NULL, ?)
   `).run(applicationId, note.trim());
+}
+
+export interface ImportSummary {
+  ok: boolean;
+  total: number;
+  imported: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
+}
+
+export function importApplications(
+  db: DatabaseSync,
+  rows: Record<string, any>[],
+  options: { updateDuplicates?: boolean } = {},
+): ImportSummary {
+  let imported = 0;
+  let updated = 0;
+  let skipped = 0;
+  const errors: string[] = [];
+
+  const seenUrlsInBatch = new Set<string>();
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const rowNum = i + 2;
+
+    try {
+      if (row.job_url) {
+        if (seenUrlsInBatch.has(row.job_url)) {
+          skipped++;
+          continue;
+        }
+        seenUrlsInBatch.add(row.job_url);
+
+        const existing = getApplicationByUrl(db, row.job_url);
+        if (existing) {
+          if (options.updateDuplicates) {
+            const updateRes = updateApplication(db, existing.id, row, existing.version);
+            if (updateRes.ok) {
+              updated++;
+            } else {
+              const msg = updateRes.reason === 'invalid' ? updateRes.message : 'Gagal memperbarui data duplikat.';
+              errors.push(`Baris ${rowNum}: ${msg}`);
+            }
+          } else {
+            skipped++;
+          }
+          continue;
+        }
+      }
+
+      createApplication(db, row);
+      imported++;
+    } catch (err: any) {
+      errors.push(`Baris ${rowNum}: ${err.message || 'Gagal menyimpan data.'}`);
+    }
+  }
+
+  return {
+    ok: errors.length === 0,
+    total: rows.length,
+    imported,
+    updated,
+    skipped,
+    errors,
+  };
 }
