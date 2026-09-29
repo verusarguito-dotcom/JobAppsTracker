@@ -1,0 +1,42 @@
+# ==============================================================================
+# Caddyfile: Production HTTPS Reverse Proxy for JobFlow / Application Tracker
+# ==============================================================================
+# Instruksi:
+# 1. Ganti 'tracker.domainanda.com' dengan nama domain atau subdomain Anda.
+# 2. Pastikan DNS A-Record domain tersebut sudah mengarah ke IP publik VPS Anda.
+# 3. Caddy otomatis mengurus sertifikat SSL/TLS (Let's Encrypt) gratis dan auto-renew.
+# ==============================================================================
+
+tracker.domainanda.com {
+    # Proxy ke aplikasi lokal (Container terkunci di 127.0.0.1:3000)
+    reverse_proxy 127.0.0.1:3000 {
+        header_up X-Forwarded-Proto https
+        header_up X-Real-IP {remote_host}
+        header_up Host {host}
+    }
+
+    # Kompresi aset untuk kecepatan akses
+    encode gzip zstd
+
+    # Hardening Security Headers
+    header {
+        # Strict Transport Security (HSTS)
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        # Mencegah browser menebak MIME type
+        X-Content-Type-Options "nosniff"
+        # Mencegah embedding di iframe pihak ketiga (Anti-Clickjacking)
+        X-Frame-Options "DENY"
+        # Referrer Policy
+        Referrer-Policy "strict-origin-when-cross-origin"
+        # Hapus header server footprint
+        -Server
+    }
+
+    # Logging akses terstruktur (opsional)
+    log {
+        output file /var/log/caddy/tracker_access.log {
+            roll_size 10mb
+            roll_keep 5
+        }
+    }
+}

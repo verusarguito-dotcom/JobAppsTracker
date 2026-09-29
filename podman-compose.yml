@@ -2,19 +2,24 @@ version: '3.8'
 
 services:
   tracker:
+    build:
+      context: .
+      dockerfile: Containerfile
     image: localhost/job-application-tracker:latest
     container_name: job-tracker
     restart: unless-stopped
     ports:
-      # STRICT LOCALHOST BINDING - Only accessible locally or via SSH tunnel
+      # STRICT LOCALHOST BINDING - Only accessible on the VPS loopback or through Caddy HTTPS reverse proxy
       - "127.0.0.1:3000:3000"
     volumes:
       - ./data:/app/data:Z
     environment:
+      - NODE_ENV=production
       - PORT=3000
-      - HOST=127.0.0.1
+      - HOST=0.0.0.0
       - DATA_DIR=/app/data
-      - TRUST_PROXY=0
+      - TRUST_PROXY=1
       - SESSION_SECRET=${SESSION_SECRET}
-      # Notice the $$ escape to prevent compose parsing truncation:
+      # If specifying APP_PASSWORD_HASH in compose file directly, escape $ to $$
+      # If using .env file with env_file or standard export, pass directly
       - APP_PASSWORD_HASH=${APP_PASSWORD_HASH}
